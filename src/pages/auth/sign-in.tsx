@@ -1,4 +1,6 @@
 import { Helmet } from 'react-helmet-async'
+import { useForm } from 'react-hook-form'
+import z from 'zod'
 
 import accessIcon from '../../assets/icons/access.svg'
 import arrowRightIconOrange from '../../assets/icons/arrow-right-orange.svg'
@@ -7,7 +9,26 @@ import mailIcon from '../../assets/icons/mail.svg'
 import { InputWithIcon } from '../../components/inputWithIcon'
 import { Label } from '../../components/label'
 
+const signInForm = z.object({
+  mail: z.string().email(),
+  password: z.string(),
+})
+
+type SignInForm = z.infer<typeof signInForm>
+
 export function SignIn() {
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<SignInForm>()
+
+  async function handleSignIn(data: SignInForm) {
+    console.log(data)
+
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+  }
+
   return (
     <>
       <Helmet title="Login" />
@@ -19,13 +40,17 @@ export function SignIn() {
             <p className="body-sm">Informe seu e-mail e senha para entrar</p>
           </div>
 
-          <form className="flex flex-col gap-5">
+          <form
+            className="flex flex-col gap-5"
+            onSubmit={handleSubmit(handleSignIn)}
+          >
             <div className="flex flex-col">
               <Label htmlFor="mail">E-mail</Label>
               <InputWithIcon
                 icon={mailIcon}
                 id="mail"
                 placeholder="Seu e-mail cadastrado"
+                {...register('mail')}
               />
             </div>
 
@@ -36,11 +61,14 @@ export function SignIn() {
                 id="password"
                 placeholder="Sua senha de acesso"
                 type="password"
+                {...register('password')}
               />
             </div>
 
             <button
-              className="mt-12 flex h-14 w-full items-center justify-between rounded-[.625rem] bg-[var(--orange-base)] px-5 text-[var(--white)] transition-colors duration-200 hover:bg-[var(--orange-dark)]"
+              className={`mt-12 flex h-14 w-full items-center justify-between rounded-[.625rem] bg-[var(--orange-base)] px-5 text-[var(--white)] transition-colors duration-200
+              ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:bg-[var(--orange-dark)]'}`}
+              disabled={isSubmitting}
               type="submit"
             >
               <span className="action-md">Acessar</span>
@@ -56,8 +84,12 @@ export function SignIn() {
             <p className="body-md text-[var(--gray-300)]">
               Ainda não tem uma conta?
             </p>
-            <button className="flex h-14 w-full items-center justify-between rounded-[.625rem] border-[1px] border-[var(--orange-base)] px-5 text-[var(--orange-base)] transition-colors duration-200 hover:border-[var(--orange-dark)] hover:text-[var(--orange-dark)]">
-              <span className="action-md">Acessar</span>
+            <button
+              className={`flex h-14 w-full items-center justify-between rounded-[.625rem] border-[1px] border-[var(--orange-base)] px-5 text-[var(--orange-base)] transition-colors duration-200                            
+                ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:border-[var(--orange-dark)] hover:text-[var(--orange-dark)]'}`}
+              disabled={isSubmitting}
+            >
+              <span className="action-md">Cadastrar</span>
               <img
                 src={arrowRightIconOrange}
                 className="h-6 w-6"

@@ -11,18 +11,16 @@ interface InputWithIconProps
   className?: string // Para permitir estilos adicionais
 }
 
-export function InputWithIcon({
-  type = 'text',
-  placeholder,
-  icon,
-  className = '',
-  ...props
-}: InputWithIconProps) {
+export const InputWithIcon = React.forwardRef<
+  HTMLInputElement,
+  InputWithIconProps
+>(({ type = 'text', placeholder, icon, className = '', ...props }, ref) => {
   const [showPassword, setShowPassword] = useState(false)
 
   // Função para alternar a visibilidade da senha
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
+    console.log(props)
   }
 
   return (
@@ -35,6 +33,7 @@ export function InputWithIcon({
         placeholder={placeholder}
         className="flex-1 text-[var(--gray-400)] placeholder-[var(--gray-200)] focus:outline-none"
         {...props}
+        ref={ref}
       />
       {type === 'password' && (
         <button type="button" onClick={togglePasswordVisibility}>
@@ -47,4 +46,7 @@ export function InputWithIcon({
       )}
     </div>
   )
-}
+})
+
+// Permite usar o ref no componente com React Hook Form
+InputWithIcon.displayName = 'InputWithIcon'
