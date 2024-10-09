@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import z from 'zod'
 
 import accessIcon from '../../assets/icons/access.svg'
@@ -24,6 +25,8 @@ const signUpForm = z.object({
 type SignUpForm = z.infer<typeof signUpForm>
 
 export function SignUp() {
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
@@ -33,7 +36,18 @@ export function SignUp() {
   async function handleSignUp(data: SignUpForm) {
     console.log(data)
 
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+
+      toast.success('Cadastro realizado com sucesso!', {
+        action: {
+          label: 'Login',
+          onClick: () => navigate('/sign-in'),
+        },
+      })
+    } catch (error) {
+      toast.error('Erro ao cadastrar.')
+    }
   }
 
   return (
