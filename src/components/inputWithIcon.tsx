@@ -7,7 +7,7 @@ interface InputWithIconProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   type?: string
   placeholder?: string
-  icon: string // Tipo como React.ReactNode, para receber um elemento React para o ícone
+  icon?: string // Tipo como React.ReactNode, para receber um elemento React para o ícone
   className?: string // Para permitir estilos adicionais
 }
 
@@ -25,13 +25,15 @@ export const InputWithIcon = React.forwardRef<
 
   return (
     <div
-      className={`flex items-center gap-2 border-b-[1px] border-[var(--gray-100)] px-[2px] py-3.5 focus-within:border-[var(--gray-400)] ${className}`}
+      className={`flex items-center gap-2 border-b-[1px] border-[var(--gray-100)] px-[2px] py-3 focus-within:border-[var(--gray-400)] 
+        
+        ${className}`}
     >
-      <img src={icon} className="h-6 w-6 opacity-50" alt="Ícone" />
+      {icon && <img src={icon} className="h-6 w-6 opacity-50" alt="Ícone" />}
       <input
         type={type === 'password' && !showPassword ? 'password' : 'text'}
         placeholder={placeholder}
-        className="flex-1 text-[var(--gray-400)] placeholder-[var(--gray-200)] focus:outline-none"
+        className="body-md my-[2.5px] w-full text-[var(--gray-400)] placeholder-[var(--gray-200)] focus:outline-none"
         {...props}
         ref={ref}
       />
