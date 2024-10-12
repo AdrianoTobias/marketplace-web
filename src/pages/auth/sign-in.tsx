@@ -1,8 +1,11 @@
+import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import z from 'zod'
 
+import { signIn } from '../../api/sign-in'
 import accessIcon from '../../assets/icons/access.svg'
 import arrowRightIconOrange from '../../assets/icons/arrow-right-orange.svg'
 import arrowRightIconWhite from '../../assets/icons/arrow-right-white.svg'
@@ -11,7 +14,7 @@ import { InputWithIcon } from '../../components/inputWithIcon'
 import { Label } from '../../components/label'
 
 const signInForm = z.object({
-  mail: z.string().email(),
+  email: z.string().email(),
   password: z.string(),
 })
 
@@ -24,10 +27,20 @@ export function SignIn() {
     formState: { isSubmitting },
   } = useForm<SignInForm>()
 
-  async function handleSignIn(data: SignInForm) {
-    console.log(data)
+  const navigate = useNavigate()
 
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+  const { mutateAsync: authenticate } = useMutation({
+    mutationFn: signIn,
+  })
+
+  async function handleSignIn(data: SignInForm) {
+    try {
+      await authenticate({ email: data.email, password: data.password })
+
+      navigate('/')
+    } catch (error) {
+      toast.error('Credenciais inválidas.')
+    }
   }
 
   return (
@@ -48,12 +61,12 @@ export function SignIn() {
             onSubmit={handleSubmit(handleSignIn)}
           >
             <div className="flex flex-col">
-              <Label htmlFor="mail">E-mail</Label>
+              <Label htmlFor="email">E-mail</Label>
               <InputWithIcon
                 icon={mailIcon}
-                id="mail"
+                id="email"
                 placeholder="Seu e-mail cadastrado"
-                {...register('mail')}
+                {...register('email')}
               />
             </div>
 
