@@ -42,10 +42,7 @@ export function Header() {
           </button>
         </Link>
 
-        <AccountMenu
-          imageUrl="https://github.com/adrianotobias.png"
-          name="Adriano Tobias"
-        />
+        <AccountMenu />
       </div>
     </div>
   )
