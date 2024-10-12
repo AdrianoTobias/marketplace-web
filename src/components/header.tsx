@@ -4,6 +4,7 @@ import chartHistogramIcon from '../assets/icons/chart-histogram.svg'
 import packageIcon from '../assets/icons/package.svg'
 import plusSignIcon from '../assets/icons/plus-sign.svg'
 import logoImage from '../assets/images/logo.svg'
+import { AccountMenu } from './accountMenu'
 import { CustomNavLink } from './customNavLink'
 
 export function Header() {
@@ -41,10 +42,9 @@ export function Header() {
           </button>
         </Link>
 
-        <img
-          src="https://github.com/adrianotobias.png"
-          className="h-12 w-12 rounded-[10px]"
-          alt="Imagem do usuário"
+        <AccountMenu
+          imageUrl="https://github.com/adrianotobias.png"
+          name="Adriano Tobias"
         />
       </div>
     </div>
