@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import {
   CartesianGrid,
   Line,
@@ -9,46 +10,9 @@ import {
   YAxis,
 } from 'recharts'
 
+import { getViewsPerDayInLast30Days } from '../../../api/get-views-per-day-in-last-30-days'
 import calendarIcon from '../../../assets//icons/calendar.svg'
 import userMultipleIcon from '../../../assets//icons/user-multiple.svg'
-
-interface DataProps {
-  date: string
-  amount: number
-}
-
-const data: DataProps[] = [
-  { date: '26', amount: 1200 },
-  { date: '27', amount: 800 },
-  { date: '28', amount: 900 },
-  { date: '29', amount: 400 },
-  { date: '30', amount: 2300 },
-  { date: '01', amount: 1000 },
-  { date: '02', amount: 1050 },
-  { date: '03', amount: 2000 },
-  { date: '04', amount: 300 },
-  { date: '05', amount: 200 },
-  { date: '06', amount: 220 },
-  { date: '07', amount: 220 },
-  { date: '08', amount: 712 },
-  { date: '09', amount: 120 },
-  { date: '10', amount: 1200 },
-  { date: '11', amount: 800 },
-  { date: '12', amount: 900 },
-  { date: '13', amount: 400 },
-  { date: '14', amount: 2300 },
-  { date: '15', amount: 800 },
-  { date: '16', amount: 640 },
-  { date: '17', amount: 1200 },
-  { date: '18', amount: 800 },
-  { date: '19', amount: 900 },
-  { date: '20', amount: 400 },
-  { date: '21', amount: 2300 },
-  { date: '22', amount: 800 },
-  { date: '23', amount: 640 },
-  { date: '24', amount: 400 },
-  { date: '25', amount: 2300 },
-]
 
 const CustomTooltip = ({
   active,
@@ -56,9 +20,13 @@ const CustomTooltip = ({
   label,
 }: TooltipProps<number, string>) => {
   if (active && payload && payload.length) {
+    const date = new Date(label)
+    const day = date.getDate()
+    const monthName = date.toLocaleString('pt-BR', { month: 'long' })
+
     return (
-      <div className="box-shadow flex w-[146px] flex-col gap-2 rounded-lg p-3">
-        <p className="label-sm text-[var(--gray-400)]">{`${label} de julho`}</p>
+      <div className="box-shadow flex w-[146px] flex-col gap-2 rounded-lg bg-white p-3">
+        <p className="label-sm text-[var(--gray-400)]">{`${day} de ${monthName}`}</p>
 
         <div className="flex items-center gap-2">
           <img
@@ -79,6 +47,24 @@ const CustomTooltip = ({
 }
 
 export function ViewsPerDayChart() {
+  const { data: viewsPerDay } = useQuery({
+    queryKey: ['metrics', 'get-views-per-day-in-last-30-days'],
+    queryFn: getViewsPerDayInLast30Days,
+  })
+
+  function dateFormatter(date: Date): string {
+    const day = date.getDate()
+    const monthName = date.toLocaleString('pt-BR', { month: 'long' })
+    return `${day} de ${monthName}`
+  }
+
+  const currentDate = new Date()
+  const dateThirtyDaysAgo = new Date()
+  dateThirtyDaysAgo.setDate(currentDate.getDate() - 30)
+
+  const formattedCurrentDate = dateFormatter(currentDate)
+  const formattedDateThirtyDaysAgo = dateFormatter(dateThirtyDaysAgo)
+
   return (
     <div className="flex h-full flex-col gap-7">
       <div className="flex items-center justify-between">
@@ -92,17 +78,20 @@ export function ViewsPerDayChart() {
           />
 
           <span className="label-sm text-[var(--gray-300)]">
-            26 de junho - 25 de julho
+            {formattedDateThirtyDaysAgo} - {formattedCurrentDate}
           </span>
         </div>
       </div>
 
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} style={{ fontSize: 12 }}>
+        <LineChart data={viewsPerDay} style={{ fontSize: 12 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis
             stroke="#949494"
             dataKey="date"
+            tickFormatter={(dateString: string) =>
+              new Date(dateString).getDate().toString()
+            }
             axisLine={false}
             tickLine={false}
             dy={18}
