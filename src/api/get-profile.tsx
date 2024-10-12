@@ -1,18 +1,8 @@
 import { api } from '../lib/axios'
-
-type avatar = {
-  id: string
-  url: string
-}
+import { seller } from './types/seller'
 
 interface GetProfileResponse {
-  seller: {
-    id: string
-    name: string
-    phone: string
-    email: string
-    avatar: avatar | null
-  }
+  seller: seller
 }
 
 export async function getProfile() {
