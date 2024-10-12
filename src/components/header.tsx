@@ -4,7 +4,7 @@ import chartHistogramIcon from '../assets/icons/chart-histogram.svg'
 import packageIcon from '../assets/icons/package.svg'
 import plusSignIcon from '../assets/icons/plus-sign.svg'
 import logoImage from '../assets/images/logo.svg'
-import { NavLink } from './navLink'
+import { CustomNavLink } from './customNavLink'
 
 export function Header() {
   return (
@@ -14,19 +14,19 @@ export function Header() {
       </div>
 
       <nav className="flex gap-2">
-        <NavLink to="/">
+        <CustomNavLink to="/">
           <img
             src={chartHistogramIcon}
             className="h-5 w-5"
             alt="Ícone de gráfico"
           />
           Dashboard
-        </NavLink>
+        </CustomNavLink>
 
-        <NavLink to="/products">
+        <CustomNavLink to="/products">
           <img src={packageIcon} className="h-5 w-5" alt="Ícone de pacote" />
           Produtos
-        </NavLink>
+        </CustomNavLink>
       </nav>
 
       <div className="flex items-center gap-4 pr-5">
