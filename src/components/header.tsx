@@ -30,7 +30,7 @@ export function Header() {
       </nav>
 
       <div className="flex items-center gap-4 pr-5">
-        <Link to="/new-product">
+        <Link to="/products/add">
           <button className="flex h-10 w-full items-center justify-between gap-2 rounded-[.625rem] bg-[var(--orange-base)] px-4 text-[var(--white)] transition-colors duration-200 hover:bg-[var(--orange-dark)]">
             <img
               src={plusSignIcon}
