@@ -1,25 +1,29 @@
+import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import z from 'zod'
 
+import { signUp } from '../../api/sign-up'
+import { uploadAttachments } from '../../api/upload-attachments'
 import accessIcon from '../../assets/icons/access.svg'
 import arrowRightIconOrange from '../../assets/icons/arrow-right-orange.svg'
 import arrowRightIconWhite from '../../assets/icons/arrow-right-white.svg'
 import callIcon from '../../assets/icons/call.svg'
-import ImageUploadIcon from '../../assets/icons/image-upload.svg'
 import mailIcon from '../../assets/icons/mail.svg'
 import userIcon from '../../assets/icons/user.svg'
+import { ImageUpload } from '../../components/imageUpload'
 import { InputWithIcon } from '../../components/inputWithIcon'
 import { Label } from '../../components/label'
 
 const signUpForm = z.object({
+  avatar: z.custom<FileList>(),
   fullname: z.string(),
   phone: z.string(),
-  mail: z.string().email(),
+  email: z.string().email(),
   password: z.string(),
-  confirmPassword: z.string(),
+  passwordConfirmation: z.string(),
 })
 
 type SignUpForm = z.infer<typeof signUpForm>
@@ -33,16 +37,42 @@ export function SignUp() {
     formState: { isSubmitting },
   } = useForm<SignUpForm>()
 
-  async function handleSignUp(data: SignUpForm) {
-    console.log(data)
+  const { mutateAsync: uploadAvatar } = useMutation({
+    mutationFn: uploadAttachments,
+  })
 
+  const { mutateAsync: signUpFn } = useMutation({
+    mutationFn: signUp,
+  })
+
+  async function handleSignUp(data: SignUpForm) {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      let attachmentId = null
+
+      if (data.avatar?.length) {
+        const files = new FormData()
+        files.append('files', data.avatar[0])
+
+        const uploadedAvatar = await uploadAvatar({ files })
+
+        attachmentId = uploadedAvatar?.attachments[0]?.id
+
+        if (!attachmentId) throw new Error()
+      }
+
+      await signUpFn({
+        name: data.fullname,
+        phone: data.phone,
+        email: data.email,
+        avatarId: attachmentId,
+        password: data.password,
+        passwordConfirmation: data.passwordConfirmation,
+      })
 
       toast.success('Cadastro realizado com sucesso!', {
         action: {
           label: 'Login',
-          onClick: () => navigate('/sign-in'),
+          onClick: () => navigate(`/sign-in?email=${data.email}`),
         },
       })
     } catch (error) {
@@ -65,8 +95,12 @@ export function SignUp() {
             <div className="space-y-5">
               <h3 className="title-sm text-[var(--gray-500)]">Perfil</h3>
 
-              <div className="flex h-[120px] w-[120px] items-center justify-center rounded-xl bg-[var(--shape)] ">
-                <img src={ImageUploadIcon} className="h-8 w-8" alt="Imagem" />
+              <div className="h-[120px] w-[120px] ">
+                <ImageUpload
+                  id="avatar"
+                  accept=".png"
+                  register={register('avatar')}
+                />
               </div>
 
               <div className="flex flex-col">
@@ -94,12 +128,12 @@ export function SignUp() {
               <h3 className="title-sm text-[var(--gray-500)]">Acesso</h3>
 
               <div className="flex flex-col">
-                <Label htmlFor="mail">E-mail</Label>
+                <Label htmlFor="email">E-mail</Label>
                 <InputWithIcon
                   icon={mailIcon}
-                  id="mail"
+                  id="email"
                   placeholder="Seu e-mail cadastrado"
-                  {...register('mail')}
+                  {...register('email')}
                 />
               </div>
 
@@ -115,13 +149,13 @@ export function SignUp() {
               </div>
 
               <div className="flex flex-col">
-                <Label htmlFor="confirmPassword">Confirmar senha</Label>
+                <Label htmlFor="passwordConfirmation">Confirmar senha</Label>
                 <InputWithIcon
                   icon={accessIcon}
-                  id="confirmPassword"
+                  id="passwordConfirmation"
                   placeholder="Confirme a senha"
                   type="password"
-                  {...register('confirmPassword')}
+                  {...register('passwordConfirmation')}
                 />
               </div>
             </div>
