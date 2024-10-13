@@ -1,51 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
-import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
-import { z } from 'zod'
+import { Link, useSearchParams } from 'react-router-dom'
 
 import { getSellerProducts } from '../../../api/get-seller-products'
-import { Status } from '../../../api/types/product'
-import saleTagIcon from '../../../assets/icons/sale-tag.svg'
-import searchIcon from '../../../assets/icons/search.svg'
-import { CustomSelect } from '../../../components/customSelect'
-import { InputWithIcon } from '../../../components/inputWithIcon'
 import { ProductCard } from './productCard'
-
-const productsForm = z.object({
-  search: z.string(),
-  status: z.string(),
-})
-
-export type ProductsForm = z.infer<typeof productsForm>
+import { ProductFilters } from './productFilters'
 
 export function Products() {
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { isSubmitting },
-  } = useForm<ProductsForm>({
-    defaultValues: {
-      status: '',
-    },
-  })
+  const [searchParams] = useSearchParams()
 
-  const statusOptions = Object.entries(Status).map(([key, value]) => ({
-    label: value,
-    value: key,
-  }))
+  const search = searchParams.get('search')
+  const status = searchParams.get('status')
 
   const { data: products } = useQuery({
-    queryKey: ['seller-products'],
-    queryFn: getSellerProducts,
+    queryKey: ['seller-products', search, status],
+    queryFn: () => getSellerProducts({ search, status }),
   })
-
-  async function handleApplyFilter(data: ProductsForm) {
-    console.log(data)
-
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-  }
 
   return (
     <>
@@ -60,39 +30,8 @@ export function Products() {
       </div>
 
       <div className="flex gap-6">
-        <div className="flex h-[306px] w-[327px] flex-col gap-6 rounded-[20px] bg-[var(--white)] p-6">
-          <h3 className="title-sm text-[var(gray-300)]">Filtrar</h3>
-
-          <form
-            className="flex flex-col gap-10"
-            onSubmit={handleSubmit(handleApplyFilter)}
-          >
-            <div className="flex flex-col gap-5">
-              <InputWithIcon
-                icon={searchIcon}
-                id="search"
-                placeholder="Pesquisar"
-                {...register('search')}
-              />
-
-              <CustomSelect
-                name="status"
-                options={statusOptions}
-                placeholder="Status"
-                icon={saleTagIcon}
-                control={control}
-              />
-            </div>
-
-            <button
-              type="submit"
-              className={`action-md flex h-14 w-full items-center justify-center rounded-[.625rem] bg-[var(--orange-base)] px-4 text-[var(--white)] transition-colors duration-200
-              ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:bg-[var(--orange-dark)]'}`}
-              disabled={isSubmitting}
-            >
-              Aplicar filtro
-            </button>
-          </form>
+        <div className="h-[306px] w-[327px]">
+          <ProductFilters />
         </div>
 
         <div className="flex w-[679px] flex-wrap gap-4">
