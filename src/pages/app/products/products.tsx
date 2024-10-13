@@ -1,11 +1,13 @@
+import { useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { z } from 'zod'
 
+import { getSellerProducts } from '../../../api/get-seller-products'
+import { Status } from '../../../api/types/product'
 import saleTagIcon from '../../../assets/icons/sale-tag.svg'
 import searchIcon from '../../../assets/icons/search.svg'
-import productTestImage from '../../../assets/images/productTestImage.png'
 import { CustomSelect } from '../../../components/customSelect'
 import { InputWithIcon } from '../../../components/inputWithIcon'
 import { ProductCard } from './productCard'
@@ -29,22 +31,15 @@ export function Products() {
     },
   })
 
-  const options = [
-    { label: 'Opção 1', value: '1' },
-    { label: 'Opção 2', value: '2' },
-    { label: 'Opção 3', value: '3' },
-  ]
+  const statusOptions = Object.entries(Status).map(([key, value]) => ({
+    label: value,
+    value: key,
+  }))
 
-  const products = {
-    productId: '7895461237879',
-    imageURL: productTestImage,
-    title: 'Sofá',
-    description:
-      'Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em metal cromado.',
-    priceInCents: 1200.9,
-    status: 'Anunciado',
-    category: 'Móvel',
-  }
+  const { data: products } = useQuery({
+    queryKey: ['seller-products'],
+    queryFn: getSellerProducts,
+  })
 
   async function handleApplyFilter(data: ProductsForm) {
     console.log(data)
@@ -82,7 +77,7 @@ export function Products() {
 
               <CustomSelect
                 name="status"
-                options={options}
+                options={statusOptions}
                 placeholder="Status"
                 icon={saleTagIcon}
                 control={control}
@@ -101,10 +96,10 @@ export function Products() {
         </div>
 
         <div className="flex w-[679px] flex-wrap gap-4">
-          {Array.from({ length: 6 }).map((_, i) => {
+          {products?.map((product) => {
             return (
-              <Link to={`/products/edit/${i}`} key={i}>
-                <ProductCard {...products} />
+              <Link to={`/products/edit/${product.id}`} key={product.id}>
+                <ProductCard {...product} />
               </Link>
             )
           })}

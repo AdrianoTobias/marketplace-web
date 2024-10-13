@@ -1,27 +1,27 @@
+import { product, Status } from '../../../api/types/product'
 import { Tag } from './tag'
 
-interface ProductCardProps {
-  imageURL: string
-  title: string
-  description: string
-  priceInCents: number
-  status: string
-  category: string
-}
-
 export function ProductCard({
-  imageURL,
   title,
   description,
   priceInCents,
   status,
   category,
-}: ProductCardProps) {
+  attachments,
+}: product) {
+  const getStatusTagColor = () => {
+    if (status === 'available') return 'var(--blue-dark)'
+
+    if (status === 'sold') return 'var(--success)'
+
+    return 'var(--gray-300)'
+  }
+
   return (
     <div className="relative flex w-[331px] cursor-pointer flex-col gap-1 rounded-[20px] border-2 border-transparent bg-white p-1 hover:border-[var(--blue-base)]">
       <div className="h-36">
         <img
-          src={imageURL}
+          src={attachments[0]?.url}
           className="h-full w-full rounded-2xl object-cover"
           alt="Imagem do produto"
         />
@@ -35,7 +35,11 @@ export function ProductCard({
 
           <div className="flex gap-1 text-[var(--gray-500)]">
             <span className="label-md mt-1">R$</span>
-            <p className="title-sm">{priceInCents}</p>
+            <p className="title-sm">
+              {(priceInCents / 100).toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+              })}
+            </p>
           </div>
         </div>
 
@@ -45,12 +49,12 @@ export function ProductCard({
       </div>
 
       <div className="end absolute right-3 top-3 flex h-5 gap-1">
-        <Tag bgColor="var(--blue-dark)" textColor="var(--white)">
-          {status}
+        <Tag bgColor={getStatusTagColor()} textColor="var(--white)">
+          {Status[status]}
         </Tag>
 
         <Tag bgColor="var(--gray-400)" textColor="var(--white)">
-          {category}
+          {category?.title}
         </Tag>
       </div>
     </div>
