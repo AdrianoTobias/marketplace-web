@@ -5,15 +5,19 @@ import imageUploadIcon from '../assets/icons/image-upload.svg'
 
 interface ImageUploadProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string
+  previewURL?: string
+  disabled?: boolean
   register: UseFormRegisterReturn
 }
 
 export function ImageUpload({
   placeholder,
+  previewURL,
   register,
+  disabled = false,
   ...props
 }: ImageUploadProps) {
-  const [preview, setPreview] = useState<string | null>(null)
+  const [preview, setPreview] = useState<string | undefined>(previewURL)
 
   function handleChangeFile(imagePreviewUrl: string) {
     setPreview(imagePreviewUrl)
@@ -23,7 +27,9 @@ export function ImageUpload({
     <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-xl bg-[var(--shape)]">
       <input
         type="file"
-        className="absolute inset-0 cursor-pointer opacity-0"
+        className={`absolute inset-0 opacity-0
+          ${!disabled && 'cursor-pointer'}`}
+        disabled={disabled}
         {...props}
         {...register}
         onChange={(e) => {

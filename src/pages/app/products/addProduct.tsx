@@ -1,32 +1,32 @@
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
-import imageUploadIcon from '../../../assets/icons/image-upload.svg'
+import { createProduct } from '../../../api/create-product'
+import { getProductCategories } from '../../../api/get-product-categories'
+import { uploadAttachments } from '../../../api/upload-attachments'
 import realCurrencyIcon from '../../../assets/icons/real-currency-orange.svg'
 import { CustomSelect } from '../../../components/customSelect'
 import { CustomTextarea } from '../../../components/customTextarea'
+import { ImageUpload } from '../../../components/imageUpload'
 import { InputWithIcon } from '../../../components/inputWithIcon'
 import { Label } from '../../../components/label'
 
 const addProductForm = z.object({
+  image: z.custom<FileList>(),
   title: z.string(),
-  amount: z.number(),
+  price: z.string(),
   description: z.string(),
   category: z.string(),
 })
 
 export type AddProductForm = z.infer<typeof addProductForm>
 
-const options = [
-  { label: 'Opção 1', value: '1' },
-  { label: 'Opção 2', value: '2' },
-  { label: 'Opção 3', value: '3' },
-]
-
 export function AddProduct() {
-  const { id } = useParams()
+  const navigate = useNavigate()
 
   const {
     register,
@@ -39,11 +39,61 @@ export function AddProduct() {
     },
   })
 
-  async function handleAddProduct(data: AddProductForm) {
-    console.log(data)
-    console.log(id)
+  function priceToCents(price: string): number {
+    const formattedPrice = price.replace(/\./g, '').replace(',', '.')
 
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    return parseFloat(formattedPrice) * 100
+  }
+
+  const { mutateAsync: uploadImage } = useMutation({
+    mutationFn: uploadAttachments,
+  })
+
+  const { mutateAsync: addProduct } = useMutation({
+    mutationFn: createProduct,
+  })
+
+  const { data: categories = [] } = useQuery({
+    queryKey: ['product-categories'],
+    queryFn: getProductCategories,
+  })
+
+  const categoriesToSelect = categories?.map((category) => ({
+    label: category.title,
+    value: category.id,
+  }))
+
+  async function handleAddProduct(data: AddProductForm) {
+    try {
+      const hasImage = data.image?.length
+
+      if (!hasImage) {
+        throw new Error()
+      }
+
+      const files = new FormData()
+      files.append('files', data.image[0])
+
+      const uploadedImage = await uploadImage({ files })
+      const attachmentId = uploadedImage?.attachments[0]?.id
+
+      const response = await addProduct({
+        title: data.title,
+        categoryId: data.category,
+        description: data.description,
+        priceInCents: priceToCents(data.price),
+        attachmentsIds: [attachmentId],
+      })
+
+      toast.success('Cadastro realizado com sucesso!', {
+        action: {
+          label: 'Ver produto',
+          onClick: () => navigate(`/products/edit/${response.product.id}`),
+        },
+      })
+    } catch (error) {
+      toast.error('Erro ao cadastrar.')
+    }
   }
 
   return (
@@ -58,24 +108,20 @@ export function AddProduct() {
         </p>
       </div>
 
-      <div className="flex gap-6">
-        <div className="flex h-[340px] w-[415px] cursor-pointer items-center justify-center rounded-[20px] bg-[var(--shape)]">
-          <div className="flex w-[159px] flex-col items-center justify-center gap-4">
-            <img src={imageUploadIcon} className="h-10 w-10" alt="" />
-
-            <p className="body-sm text-center text-[var(--gray-300)]">
-              Selecione a imagem do produto
-            </p>
-          </div>
+      <form className="flex gap-6" onSubmit={handleSubmit(handleAddProduct)}>
+        <div className="h-[340px] w-[415px]">
+          <ImageUpload
+            id="image"
+            accept=".png"
+            register={register('image')}
+            placeholder="Selecione a imagem do produto"
+          />
         </div>
 
         <div className="flex w-[591px] flex-col gap-6 rounded-[20px] bg-white p-6">
           <p className="title-sm text-[var(--gray-300)]">Dados do produto</p>
 
-          <form
-            className="flex flex-col gap-10"
-            onSubmit={handleSubmit(handleAddProduct)}
-          >
+          <div className="flex flex-col gap-10">
             <div className="flex flex-col gap-5">
               <div className="flex gap-5">
                 <div className="w-[323px]">
@@ -88,12 +134,12 @@ export function AddProduct() {
                 </div>
 
                 <div>
-                  <Label htmlFor="amount">Valor</Label>
+                  <Label htmlFor="price">Valor</Label>
                   <InputWithIcon
                     icon={realCurrencyIcon}
-                    id="amount"
+                    id="price"
                     placeholder="0,00"
-                    {...register('amount')}
+                    {...register('price')}
                   />
                 </div>
               </div>
@@ -111,7 +157,7 @@ export function AddProduct() {
                 <Label htmlFor="category">Categoria</Label>
                 <CustomSelect
                   name="category"
-                  options={options}
+                  options={categoriesToSelect}
                   placeholder="Selecione"
                   control={control}
                 />
@@ -140,9 +186,9 @@ export function AddProduct() {
                 Salvar e publicar
               </button>
             </div>
-          </form>
+          </div>
         </div>
-      </div>
+      </form>
     </>
   )
 }
