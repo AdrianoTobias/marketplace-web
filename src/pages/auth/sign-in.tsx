@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
@@ -10,15 +11,16 @@ import accessIcon from '../../assets/icons/access.svg'
 import arrowRightIconOrange from '../../assets/icons/arrow-right-orange.svg'
 import arrowRightIconWhite from '../../assets/icons/arrow-right-white.svg'
 import mailIcon from '../../assets/icons/mail.svg'
+import { FieldErrorMessage } from '../../components/fieldErrorMessage'
 import { InputWithIcon } from '../../components/inputWithIcon'
 import { Label } from '../../components/label'
 
-const signInForm = z.object({
-  email: z.string().email(),
-  password: z.string(),
+const signInFormSchema = z.object({
+  email: z.string().email('E-mail inválido'),
+  password: z.string().min(1, 'Informe a senha'),
 })
 
-type SignInForm = z.infer<typeof signInForm>
+type SignInForm = z.infer<typeof signInFormSchema>
 
 export function SignIn() {
   const [searchParams] = useSearchParams()
@@ -26,8 +28,9 @@ export function SignIn() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useForm<SignInForm>({
+    resolver: zodResolver(signInFormSchema),
     defaultValues: {
       email: searchParams.get('email') ?? '',
     },
@@ -74,6 +77,10 @@ export function SignIn() {
                 placeholder="Seu e-mail cadastrado"
                 {...register('email')}
               />
+
+              {errors.email && (
+                <FieldErrorMessage message={errors.email.message} />
+              )}
             </div>
 
             <div className="flex flex-col">
@@ -85,6 +92,10 @@ export function SignIn() {
                 type="password"
                 {...register('password')}
               />
+
+              {errors.password && (
+                <FieldErrorMessage message={errors.password.message} />
+              )}
             </div>
 
             <button
