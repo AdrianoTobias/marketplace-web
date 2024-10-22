@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
@@ -20,20 +21,53 @@ import tickIcon from '../../../assets/icons/tick.svg'
 import unavailableIcon from '../../../assets/icons/unavailable.svg'
 import { CustomSelect } from '../../../components/customSelect'
 import { CustomTextarea } from '../../../components/customTextarea'
+import { FieldErrorMessage } from '../../../components/fieldErrorMessage'
 import { ImageUpload } from '../../../components/imageUpload'
 import { InputWithIcon } from '../../../components/inputWithIcon'
 import { Label } from '../../../components/label'
 import { Tag } from './tag'
 
-const editProductForm = z.object({
-  image: z.custom<FileList>(),
-  title: z.string(),
-  price: z.string(),
-  description: z.string(),
-  category: z.string(),
+const ACCEPTED_IMAGE_TYPES = ['image/png']
+
+const priceRegex = /^\d{1,3}(\.\d{3})*(,\d{2})?$/ // 0.000,00
+
+const editProductFormSchema = z.object({
+  image: z
+    .custom<FileList>()
+    .optional()
+    .refine(
+      (files) => {
+        return Array.from(files ?? []).every((file) =>
+          ACCEPTED_IMAGE_TYPES.includes(file.type),
+        )
+      },
+      {
+        message: 'A imagem precisa ser do tipo PNG',
+      },
+    ),
+
+  title: z.string().min(1, 'Informe o título'),
+
+  price: z
+    .string()
+    .min(1, 'Informe o valor')
+    .regex(priceRegex, 'Valor inválido')
+    .refine(
+      (val) => {
+        const parsedValue = val.replace(/\./g, '').replace(',', '.')
+        return parseFloat(parsedValue) > 0
+      },
+      { message: 'O Valor deve ser maior que zero' },
+    ),
+
+  description: z
+    .string()
+    .min(15, 'A descrição deve ter no mínimo 15 caracteres'),
+
+  category: z.string().min(1, 'Selecione a categoria'),
 })
 
-export type EditProductForm = z.infer<typeof editProductForm>
+export type EditProductForm = z.infer<typeof editProductFormSchema>
 
 export function EditProduct() {
   const { id } = useParams() as { id: string }
@@ -49,10 +83,10 @@ export function EditProduct() {
     register,
     handleSubmit,
     control,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useForm<EditProductForm>({
+    resolver: zodResolver(editProductFormSchema),
     values: {
-      image: undefined,
       title: product?.title ?? '',
       price: product?.priceInCents ? centsToPrice(product?.priceInCents) : '',
       description: product?.description ?? '',
@@ -125,9 +159,8 @@ export function EditProduct() {
   async function handleEditProduct(data: EditProductForm) {
     try {
       let attachmentId = product?.attachments[0]?.id
-      const hasNewImage = data.image?.length
 
-      if (hasNewImage) {
+      if (data.image?.length) {
         const files = new FormData()
         files.append('files', data.image[0])
 
@@ -290,15 +323,21 @@ export function EditProduct() {
 
       {product && (
         <form className="flex gap-6" onSubmit={handleSubmit(handleEditProduct)}>
-          <div className="h-[340px] w-[415px]">
-            <ImageUpload
-              id="image"
-              accept=".png"
-              placeholder="Selecione a imagem do produto"
-              previewURL={product.attachments[0]?.url}
-              disabled={['sold', 'cancelled'].includes(product.status)}
-              register={register('image')}
-            />
+          <div>
+            <div className="h-[340px] w-[415px]">
+              <ImageUpload
+                id="image"
+                accept=".png"
+                placeholder="Selecione a imagem do produto"
+                previewURL={product.attachments[0]?.url}
+                disabled={['sold', 'cancelled'].includes(product.status)}
+                register={register('image')}
+              />
+            </div>
+
+            {errors.image && (
+              <FieldErrorMessage message={errors.image.message} />
+            )}
           </div>
 
           <div className="flex w-[591px] flex-col gap-6 rounded-[20px] bg-white p-6">
@@ -326,6 +365,10 @@ export function EditProduct() {
                       disabled={['sold', 'cancelled'].includes(product.status)}
                       {...register('title')}
                     />
+
+                    {errors.title && (
+                      <FieldErrorMessage message={errors.title.message} />
+                    )}
                   </div>
 
                   <div>
@@ -337,6 +380,10 @@ export function EditProduct() {
                       disabled={['sold', 'cancelled'].includes(product.status)}
                       {...register('price')}
                     />
+
+                    {errors.price && (
+                      <FieldErrorMessage message={errors.price.message} />
+                    )}
                   </div>
                 </div>
 
@@ -349,6 +396,10 @@ export function EditProduct() {
                     disabled={['sold', 'cancelled'].includes(product.status)}
                     register={register('description')}
                   />
+
+                  {errors.description && (
+                    <FieldErrorMessage message={errors.description.message} />
+                  )}
                 </div>
 
                 <div>
@@ -360,6 +411,10 @@ export function EditProduct() {
                     disabled={['sold', 'cancelled'].includes(product.status)}
                     control={control}
                   />
+
+                  {errors.category && (
+                    <FieldErrorMessage message={errors.category.message} />
+                  )}
                 </div>
               </div>
 
