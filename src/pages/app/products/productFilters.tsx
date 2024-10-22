@@ -10,8 +10,8 @@ import { CustomSelect } from '../../../components/customSelect'
 import { InputWithIcon } from '../../../components/inputWithIcon'
 
 const productFiltersSchema = z.object({
-  search: z.string(),
-  status: z.string(),
+  search: z.string().optional(),
+  status: z.string().optional(),
 })
 
 export type ProductFiltersSchema = z.infer<typeof productFiltersSchema>
