@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
@@ -11,19 +12,54 @@ import { uploadAttachments } from '../../../api/upload-attachments'
 import realCurrencyIcon from '../../../assets/icons/real-currency-orange.svg'
 import { CustomSelect } from '../../../components/customSelect'
 import { CustomTextarea } from '../../../components/customTextarea'
+import { FieldErrorMessage } from '../../../components/fieldErrorMessage'
 import { ImageUpload } from '../../../components/imageUpload'
 import { InputWithIcon } from '../../../components/inputWithIcon'
 import { Label } from '../../../components/label'
 
-const addProductForm = z.object({
-  image: z.custom<FileList>(),
-  title: z.string(),
-  price: z.string(),
-  description: z.string(),
-  category: z.string(),
+const ACCEPTED_IMAGE_TYPES = ['image/png']
+
+const priceRegex = /^\d{1,3}(\.\d{3})*(,\d{2})?$/ // 0.000,00
+
+const addProductFormSchema = z.object({
+  image: z
+    .custom<FileList>()
+    .refine((files) => files && files.length > 0, {
+      message: 'A imagem é obrigatória',
+    })
+    .refine(
+      (files) => {
+        return Array.from(files ?? []).every((file) =>
+          ACCEPTED_IMAGE_TYPES.includes(file.type),
+        )
+      },
+      {
+        message: 'A imagem precisa ser do tipo PNG',
+      },
+    ),
+
+  title: z.string().min(1, 'Informe o título'),
+
+  price: z
+    .string()
+    .min(1, 'Informe o valor')
+    .regex(priceRegex, 'Valor inválido')
+    .refine(
+      (val) => {
+        const parsedValue = val.replace(/\./g, '').replace(',', '.')
+        return parseFloat(parsedValue) > 0
+      },
+      { message: 'O Valor deve ser maior que zero' },
+    ),
+
+  description: z
+    .string()
+    .min(15, 'A descrição deve ter no mínimo 15 caracteres'),
+
+  category: z.string().min(1, 'Selecione a categoria'),
 })
 
-export type AddProductForm = z.infer<typeof addProductForm>
+export type AddProductForm = z.infer<typeof addProductFormSchema>
 
 export function AddProduct() {
   const navigate = useNavigate()
@@ -32,8 +68,9 @@ export function AddProduct() {
     register,
     handleSubmit,
     control,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useForm<AddProductForm>({
+    resolver: zodResolver(addProductFormSchema),
     defaultValues: {
       category: '',
     },
@@ -109,13 +146,17 @@ export function AddProduct() {
       </div>
 
       <form className="flex gap-6" onSubmit={handleSubmit(handleAddProduct)}>
-        <div className="h-[340px] w-[415px]">
-          <ImageUpload
-            id="image"
-            accept=".png"
-            register={register('image')}
-            placeholder="Selecione a imagem do produto"
-          />
+        <div>
+          <div className="h-[340px] w-[415px]">
+            <ImageUpload
+              id="image"
+              accept=".png"
+              register={register('image')}
+              placeholder="Selecione a imagem do produto"
+            />
+          </div>
+
+          {errors.image && <FieldErrorMessage message={errors.image.message} />}
         </div>
 
         <div className="flex w-[591px] flex-col gap-6 rounded-[20px] bg-white p-6">
@@ -131,6 +172,10 @@ export function AddProduct() {
                     placeholder="Nome do produto"
                     {...register('title')}
                   />
+
+                  {errors.title && (
+                    <FieldErrorMessage message={errors.title.message} />
+                  )}
                 </div>
 
                 <div>
@@ -141,6 +186,10 @@ export function AddProduct() {
                     placeholder="0,00"
                     {...register('price')}
                   />
+
+                  {errors.price && (
+                    <FieldErrorMessage message={errors.price.message} />
+                  )}
                 </div>
               </div>
 
@@ -151,6 +200,10 @@ export function AddProduct() {
                   placeholder="Escreva detalhes sobre o produto, tamanho e características"
                   register={register('description')}
                 />
+
+                {errors.description && (
+                  <FieldErrorMessage message={errors.description.message} />
+                )}
               </div>
 
               <div>
@@ -161,6 +214,10 @@ export function AddProduct() {
                   placeholder="Selecione"
                   control={control}
                 />
+
+                {errors.category && (
+                  <FieldErrorMessage message={errors.category.message} />
+                )}
               </div>
             </div>
 
