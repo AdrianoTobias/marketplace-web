@@ -5,11 +5,12 @@ import { useNavigate } from 'react-router-dom'
 import { getProfile } from '../api/get-profile'
 import { signOut } from '../api/sign-out'
 import logoutIcon from '../assets/icons/logout.svg'
+import { Skeleton } from './skeleton'
 
 export function AccountMenu() {
   const navigate = useNavigate()
 
-  const { data: profile } = useQuery({
+  const { data: profile, isLoading: isLoadingProfile } = useQuery({
     queryKey: ['profile'],
     queryFn: getProfile,
   })
@@ -29,24 +30,39 @@ export function AccountMenu() {
 
   return (
     <div className="relative">
-      <div onClick={toggleAccountMenu} className="fcursor-pointer">
-        <img
-          src={profile?.avatar?.url}
-          className="h-12 w-12 cursor-pointer rounded-[10px] object-cover"
-          alt="Imagem do usuário"
-        />
+      <div onClick={toggleAccountMenu} className="cursor-pointer">
+        {isLoadingProfile ? (
+          <Skeleton className="h-12 w-12 rounded-[10px]" />
+        ) : (
+          <img
+            src={profile?.avatar?.url}
+            className="h-12 w-12 cursor-pointer rounded-[10px] object-cover"
+            alt="Imagem do usuário"
+          />
+        )}
       </div>
 
       {isOpen && (
         <div className="absolute right-0 mt-3 flex w-[168px] flex-col gap-5 rounded-[12px] bg-white p-4 shadow-lg">
           <div className="flex items-center gap-3">
-            <img
-              src={profile?.avatar?.url}
-              alt="Imagem do usuário"
-              className="h-8 w-8 rounded-lg border border-[var(--shape)] object-cover"
-            />
+            {isLoadingProfile ? (
+              <>
+                <Skeleton className="h-8 w-8 rounded-lg" />
+                <Skeleton className="h-4 w-24 rounded-xl" />
+              </>
+            ) : (
+              <>
+                <img
+                  src={profile?.avatar?.url}
+                  alt="Imagem do usuário"
+                  className="h-8 w-8 rounded-lg border border-[var(--shape)] object-cover"
+                />
 
-            <p className="body-sm text-[var(--gray-300)]">{profile?.name}</p>
+                <p className="body-sm text-[var(--gray-300)]">
+                  {profile?.name}
+                </p>
+              </>
+            )}
           </div>
 
           <div className="border-t border-[var(--shape)]"></div>

@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -25,6 +25,7 @@ import { FieldErrorMessage } from '../../../components/fieldErrorMessage'
 import { ImageUpload } from '../../../components/imageUpload'
 import { InputWithIcon } from '../../../components/inputWithIcon'
 import { Label } from '../../../components/label'
+import { Skeleton } from '../../../components/skeleton'
 import { Tag } from './tag'
 
 const ACCEPTED_IMAGE_TYPES = ['image/png']
@@ -71,6 +72,8 @@ export type EditProductForm = z.infer<typeof editProductFormSchema>
 
 export function EditProduct() {
   const { id } = useParams() as { id: string }
+
+  const navigate = useNavigate()
 
   const queryClient = useQueryClient()
 
@@ -146,6 +149,10 @@ export function EditProduct() {
     value: category.id,
   }))
 
+  function handleGoBack() {
+    navigate(-1)
+  }
+
   async function handleChangeProductStatus(status: keyof typeof Status) {
     try {
       await changeProductStatusFn({ id, status })
@@ -193,8 +200,8 @@ export function EditProduct() {
 
       <div className="mb-10 mt-8 flex">
         <div className="flex flex-col gap-2">
-          <Link
-            to="/products"
+          <button
+            onClick={handleGoBack}
             className="action-md flex items-center gap-2 p-0.5 text-[var(--orange-base)] hover:text-[var(--orange-dark)]"
           >
             <img
@@ -203,7 +210,7 @@ export function EditProduct() {
               alt="Ícone de seta para a esquerda"
             />
             Voltar
-          </Link>
+          </button>
 
           <h2 className="title-md text-[var(--gray-500)]">Editar produto</h2>
 
@@ -316,12 +323,15 @@ export function EditProduct() {
               </button>
             </>
           ) : (
-            ''
+            <>
+              <Skeleton className="h-6 w-[170px] rounded-xl" />
+              <Skeleton className="h-6 w-[170px] rounded-xl" />
+            </>
           )}
         </div>
       </div>
 
-      {product && (
+      {product ? (
         <form className="flex gap-6" onSubmit={handleSubmit(handleEditProduct)}>
           <div>
             <div className="h-[340px] w-[415px]">
@@ -451,6 +461,64 @@ export function EditProduct() {
             </div>
           </div>
         </form>
+      ) : (
+        <div className="flex gap-6">
+          <div>
+            <Skeleton className="h-[340px] w-[415px] rounded-xl" />
+          </div>
+
+          <div className="flex w-[591px] flex-col gap-6 rounded-[20px] bg-white p-6">
+            <div className="flex items-center justify-between">
+              <p className="title-sm text-[var(--gray-300)]">
+                Dados do produto
+              </p>
+
+              <Skeleton className="h-5 w-20 rounded-xl" />
+            </div>
+
+            <div className="flex flex-col gap-10">
+              <div className="flex flex-col gap-5">
+                <div className="flex gap-5">
+                  <div className="w-[301px]">
+                    <Label htmlFor="title">Título</Label>
+                    <Skeleton className="h-[49px] w-full rounded-xl" />
+                  </div>
+
+                  <div className="flex-1">
+                    <Label htmlFor="price">Valor</Label>
+                    <Skeleton className="h-[49px] w-full rounded-xl" />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="description">Descrição</Label>
+                  <Skeleton className="h-[112px] w-full rounded-xl" />
+                </div>
+
+                <div>
+                  <Label htmlFor="category">Categoria</Label>
+                  <Skeleton className="h-[53px] w-full rounded-xl" />
+                </div>
+              </div>
+
+              <div className="flex h-12 gap-3">
+                <Link to="/products" className="flex h-full w-full">
+                  <button className="action-md flex w-full items-center justify-center rounded-[.625rem] border border-[var(--orange-base)] bg-white px-4 text-[var(--orange-base)]  transition-colors duration-200 hover:border-[var(--orange-dark)] hover:text-[var(--orange-dark)]">
+                    Cancelar
+                  </button>
+                </Link>
+
+                <button
+                  type="submit"
+                  className="action-md flex h-full w-full cursor-not-allowed items-center justify-center rounded-[.625rem] bg-[var(--orange-base)] px-4 text-[var(--white)] opacity-55 transition-colors duration-200"
+                  disabled={true}
+                >
+                  Salvar e atualizar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </>
   )

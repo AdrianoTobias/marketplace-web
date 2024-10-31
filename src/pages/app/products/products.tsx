@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { Link, useSearchParams } from 'react-router-dom'
 
 import { getSellerProducts } from '../../../api/get-seller-products'
-import { ProductCard } from './productCard'
+import { ProductCard, ProductCardSkeleton } from './productCard'
 import { ProductFilters } from './productFilters'
 
 export function Products() {
@@ -12,7 +12,7 @@ export function Products() {
   const search = searchParams.get('search')
   const status = searchParams.get('status')
 
-  const { data: products } = useQuery({
+  const { data: products, isLoading: isLoadingProducts } = useQuery({
     queryKey: ['seller-products', search, status],
     queryFn: () => getSellerProducts({ search, status }),
   })
@@ -35,13 +35,19 @@ export function Products() {
         </div>
 
         <div className="flex w-[679px] flex-wrap gap-4">
-          {products?.map((product) => {
-            return (
-              <Link to={`/products/edit/${product.id}`} key={product.id}>
-                <ProductCard {...product} />
-              </Link>
-            )
-          })}
+          {isLoadingProducts
+            ? Array.from({ length: 4 }).map((_, index) => {
+                return (
+                  <ProductCardSkeleton key={`product-card-skeleton_${index}`} />
+                )
+              })
+            : products?.map((product) => {
+                return (
+                  <Link to={`/products/edit/${product.id}`} key={product.id}>
+                    <ProductCard {...product} />
+                  </Link>
+                )
+              })}
         </div>
       </div>
     </>
