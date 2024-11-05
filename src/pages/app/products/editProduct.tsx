@@ -1,24 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { changeProductStatus } from '../../../api/change-product-status'
 import { editProduct } from '../../../api/edit-product'
-import {
-  getProductById,
-  GetProductByIdResponse,
-} from '../../../api/get-product-by-id'
+import { getProductById } from '../../../api/get-product-by-id'
 import { getProductCategories } from '../../../api/get-product-categories'
 import { Status } from '../../../api/types/product'
 import { uploadAttachments } from '../../../api/upload-attachments'
 import arrowLeftOrangeIcon from '../../../assets/icons/arrow-left-orange.svg'
 import realCurrencyIcon from '../../../assets/icons/real-currency-orange.svg'
-import tickIcon from '../../../assets/icons/tick.svg'
-import unavailableIcon from '../../../assets/icons/unavailable.svg'
 import { CustomSelect } from '../../../components/customSelect'
 import { CustomTextarea } from '../../../components/customTextarea'
 import { FieldErrorMessage } from '../../../components/fieldErrorMessage'
@@ -26,6 +20,7 @@ import { ImageUpload } from '../../../components/imageUpload'
 import { InputWithIcon } from '../../../components/inputWithIcon'
 import { Label } from '../../../components/label'
 import { Skeleton } from '../../../components/skeleton'
+import { ChangeProductStatus } from './changeProductStatus'
 import { Tag } from './tag'
 
 const ACCEPTED_IMAGE_TYPES = ['image/png']
@@ -75,8 +70,6 @@ export function EditProduct() {
 
   const navigate = useNavigate()
 
-  const queryClient = useQueryClient()
-
   const { data: { product } = {} } = useQuery({
     queryKey: ['get-product-by-id', id],
     queryFn: () => getProductById({ id }),
@@ -117,28 +110,6 @@ export function EditProduct() {
     mutationFn: editProduct,
   })
 
-  const {
-    mutateAsync: changeProductStatusFn,
-    isPending: isChangindProductStatus,
-  } = useMutation({
-    mutationFn: changeProductStatus,
-    onSuccess(_, { id, status }) {
-      const cached = queryClient.getQueryData<GetProductByIdResponse>([
-        'get-product-by-id',
-        id,
-      ])
-
-      if (cached) {
-        queryClient.setQueryData<GetProductByIdResponse>(
-          ['get-product-by-id', id],
-          {
-            product: { ...cached.product, status },
-          },
-        )
-      }
-    },
-  })
-
   const { data: categories = [] } = useQuery({
     queryKey: ['product-categories'],
     queryFn: getProductCategories,
@@ -151,16 +122,6 @@ export function EditProduct() {
 
   function handleGoBack() {
     navigate(-1)
-  }
-
-  async function handleChangeProductStatus(status: keyof typeof Status) {
-    try {
-      await changeProductStatusFn({ id, status })
-
-      toast.success(`Status do produto alterado com sucesso!`)
-    } catch (error) {
-      toast.error('Erro ao alterar o status do produto.')
-    }
   }
 
   async function handleEditProduct(data: EditProductForm) {
@@ -219,115 +180,8 @@ export function EditProduct() {
           </p>
         </div>
 
-        <div className="action-sm ml-auto flex items-end gap-4 pr-3 text-[var(--orange-base)]">
-          {product?.status === 'available' ? (
-            <>
-              <button
-                className={`flex items-end gap-2 p-0.5 
-                  ${
-                    isChangindProductStatus
-                      ? 'opacity-55'
-                      : 'hover:text-[var(--orange-dark)]'
-                  }`}
-                disabled={isChangindProductStatus}
-                onClick={() => handleChangeProductStatus('sold')}
-              >
-                <img
-                  src={tickIcon}
-                  className="h-5 w-5"
-                  alt="Íconde de ticado"
-                />
-                Marcar como vendido
-              </button>
-
-              <button
-                className={`flex items-end gap-2 p-0.5 
-                  ${
-                    isChangindProductStatus
-                      ? 'opacity-55'
-                      : 'hover:text-[var(--orange-dark)]'
-                  }`}
-                disabled={isChangindProductStatus}
-                onClick={() => handleChangeProductStatus('cancelled')}
-              >
-                <img
-                  src={unavailableIcon}
-                  className="h-5 w-5"
-                  alt="Íconde de indisponível"
-                />
-                Desativar anúncio
-              </button>
-            </>
-          ) : product?.status === 'sold' ? (
-            <>
-              <button
-                className={`flex items-end gap-2 p-0.5 
-                  ${
-                    isChangindProductStatus
-                      ? 'opacity-55'
-                      : 'hover:text-[var(--orange-dark)]'
-                  }`}
-                disabled={isChangindProductStatus}
-                onClick={() => handleChangeProductStatus('available')}
-              >
-                <img
-                  src={tickIcon}
-                  className="h-5 w-5"
-                  alt="Íconde de ticado"
-                />
-                Marcar como disponível
-              </button>
-
-              <button
-                className="flex items-end gap-2 p-0.5 opacity-55"
-                disabled
-              >
-                <img
-                  src={unavailableIcon}
-                  className="h-5 w-5"
-                  alt="Íconde de indisponível"
-                />
-                Produto vendiddo
-              </button>
-            </>
-          ) : product?.status === 'cancelled' ? (
-            <>
-              <button
-                className={`flex items-end gap-2 p-0.5 
-                  ${
-                    isChangindProductStatus
-                      ? 'opacity-55'
-                      : 'hover:text-[var(--orange-dark)]'
-                  }`}
-                disabled={isChangindProductStatus}
-                onClick={() => handleChangeProductStatus('available')}
-              >
-                <img
-                  src={tickIcon}
-                  className="h-5 w-5"
-                  alt="Íconde de ticado"
-                />
-                Reativar produto
-              </button>
-
-              <button
-                className="flex items-end gap-2 p-0.5 opacity-55"
-                disabled
-              >
-                <img
-                  src={unavailableIcon}
-                  className="h-5 w-5"
-                  alt="Íconde de indisponível"
-                />
-                Produto desabilitado
-              </button>
-            </>
-          ) : (
-            <>
-              <Skeleton className="h-6 w-[170px] rounded-xl" />
-              <Skeleton className="h-6 w-[170px] rounded-xl" />
-            </>
-          )}
+        <div className="ml-auto flex items-end pr-3">
+          <ChangeProductStatus productId={id} productStatus={product?.status} />
         </div>
       </div>
 
