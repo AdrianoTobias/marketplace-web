@@ -11,9 +11,9 @@ export function Dashboard() {
       <Helmet title="Dashboard" />
 
       <div className="mb-10 mt-16 flex flex-col gap-2">
-        <h2 className="title-md text-[var(--gray-500)]">Últimos 30 dias</h2>
+        <h2 className="title-md text-gray-500">Últimos 30 dias</h2>
 
-        <p className="body-sm text-[var(--gray-300)]">
+        <p className="body-sm text-gray-300">
           Confira as estatísticas da sua loja no último mês
         </p>
       </div>
@@ -25,7 +25,7 @@ export function Dashboard() {
           <ViewsReceivedInLast30Days />
         </div>
 
-        <div className="flex-1 rounded-[20px] bg-[var(--white)] px-6 pb-5 pt-6">
+        <div className="flex-1 rounded-[20px] bg-white px-6 pb-5 pt-6">
           <ViewsPerDayChart />
         </div>
       </div>

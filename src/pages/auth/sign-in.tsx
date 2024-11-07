@@ -56,12 +56,10 @@ export function SignIn() {
     <>
       <Helmet title="Login" />
 
-      <div className="h-full w-full rounded-[32px] bg-[var(--white)] px-20 py-[4.5rem]">
+      <div className="h-full w-full rounded-[32px] bg-white px-20 py-[4.5rem]">
         <div className="flex h-full flex-col gap-12">
           <div className="flex flex-col gap-2 ">
-            <h2 className="title-md text-[var(--gray-500)]">
-              Acesse sua conta
-            </h2>
+            <h2 className="title-md text-gray-500">Acesse sua conta</h2>
             <p className="body-sm">Informe seu e-mail e senha para entrar</p>
           </div>
 
@@ -99,8 +97,8 @@ export function SignIn() {
             </div>
 
             <button
-              className={`mt-12 flex h-14 w-full items-center justify-between rounded-[.625rem] bg-[var(--orange-base)] px-5 text-[var(--white)] transition-colors duration-200
-              ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:bg-[var(--orange-dark)]'}`}
+              className={`bg-orange-base mt-12 flex h-14 w-full items-center justify-between rounded-[.625rem] px-5 text-white transition-colors duration-200
+              ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:bg-orange-dark'}`}
               disabled={isSubmitting}
               type="submit"
             >
@@ -114,15 +112,13 @@ export function SignIn() {
           </form>
 
           <div className="mt-auto space-y-5">
-            <p className="body-md text-[var(--gray-300)]">
-              Ainda não tem uma conta?
-            </p>
+            <p className="body-md text-gray-300">Ainda não tem uma conta?</p>
 
             <div>
               <Link to="/sign-up">
                 <button
-                  className={`flex h-14 w-full items-center justify-between rounded-[.625rem] border-[1px] border-[var(--orange-base)] px-5 text-[var(--orange-base)] transition-colors duration-200                            
-                ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:border-[var(--orange-dark)] hover:text-[var(--orange-dark)]'}`}
+                  className={`border-orange-base text-orange-base flex h-14 w-full items-center justify-between rounded-[.625rem] border-[1px] px-5 transition-colors duration-200                            
+                ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:border-orange-dark hover:text-orange-dark'}`}
                   disabled={isSubmitting}
                 >
                   <span className="action-md">Cadastrar</span>

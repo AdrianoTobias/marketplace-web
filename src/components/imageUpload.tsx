@@ -24,7 +24,7 @@ export function ImageUpload({
   }
 
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-xl bg-[var(--shape)]">
+    <div className="bg-shape relative flex h-full w-full items-center justify-center overflow-hidden rounded-xl">
       <input
         type="file"
         className={`absolute inset-0 opacity-0
@@ -56,9 +56,7 @@ export function ImageUpload({
           />
 
           {placeholder && (
-            <p className="body-sm text-center text-[var(--gray-300)]">
-              {placeholder}
-            </p>
+            <p className="body-sm text-center text-gray-300">{placeholder}</p>
           )}
         </div>
       )}

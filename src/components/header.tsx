@@ -9,7 +9,7 @@ import { CustomNavLink } from './customNavLink'
 
 export function Header() {
   return (
-    <div className="flex h-20 items-center justify-between border-b border-[var(--shape)]">
+    <div className="border-shape flex h-20 items-center justify-between border-b">
       <div className=" p-5">
         <img src={logoImage} className="h-10 w-14" alt="Logo" />
       </div>
@@ -32,7 +32,7 @@ export function Header() {
 
       <div className="flex items-center gap-4 pr-5">
         <Link to="/products/add">
-          <button className="flex h-10 w-full items-center justify-between gap-2 rounded-[.625rem] bg-[var(--orange-base)] px-4 text-[var(--white)] transition-colors duration-200 hover:bg-[var(--orange-dark)]">
+          <button className="bg-orange-base hover:bg-orange-dark flex h-10 w-full items-center justify-between gap-2 rounded-[.625rem] px-4 text-white transition-colors duration-200">
             <img
               src={plusSignIcon}
               className="h-5 w-5"

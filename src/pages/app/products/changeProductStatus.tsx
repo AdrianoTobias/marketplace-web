@@ -57,15 +57,15 @@ export function ChangeProductStatus({
   }
 
   return (
-    <div className="action-sm flex gap-4 text-[var(--orange-base)]">
+    <div className="text-orange-base flex gap-4">
       {productStatus === 'available' ? (
         <>
           <button
-            className={`flex items-end gap-2 p-0.5 
+            className={`action-sm flex items-end gap-2 p-0.5
                   ${
                     isChangindProductStatus
                       ? 'opacity-55'
-                      : 'hover:text-[var(--orange-dark)]'
+                      : 'hover:text-orange-dark'
                   }`}
             disabled={isChangindProductStatus}
             onClick={() =>
@@ -77,11 +77,11 @@ export function ChangeProductStatus({
           </button>
 
           <button
-            className={`flex items-end gap-2 p-0.5 
+            className={`action-sm flex items-end gap-2 p-0.5
                   ${
                     isChangindProductStatus
                       ? 'opacity-55'
-                      : 'hover:text-[var(--orange-dark)]'
+                      : 'hover:text-orange-dark'
                   }`}
             disabled={isChangindProductStatus}
             onClick={() =>
@@ -99,11 +99,11 @@ export function ChangeProductStatus({
       ) : productStatus === 'sold' ? (
         <>
           <button
-            className={`flex items-end gap-2 p-0.5 
+            className={`action-sm flex items-end gap-2 p-0.5
                   ${
                     isChangindProductStatus
                       ? 'opacity-55'
-                      : 'hover:text-[var(--orange-dark)]'
+                      : 'hover:text-orange-dark'
                   }`}
             disabled={isChangindProductStatus}
             onClick={() =>
@@ -114,7 +114,10 @@ export function ChangeProductStatus({
             Marcar como disponível
           </button>
 
-          <button className="flex items-end gap-2 p-0.5 opacity-55" disabled>
+          <button
+            className="action-sm flex items-end gap-2 p-0.5 opacity-55"
+            disabled
+          >
             <img
               src={unavailableIcon}
               className="h-5 w-5"
@@ -126,11 +129,11 @@ export function ChangeProductStatus({
       ) : productStatus === 'cancelled' ? (
         <>
           <button
-            className={`flex items-end gap-2 p-0.5 
+            className={`action-sm flex items-end gap-2 p-0.5
                   ${
                     isChangindProductStatus
                       ? 'opacity-55'
-                      : 'hover:text-[var(--orange-dark)]'
+                      : 'hover:text-orange-dark'
                   }`}
             disabled={isChangindProductStatus}
             onClick={() =>
@@ -141,7 +144,10 @@ export function ChangeProductStatus({
             Reativar produto
           </button>
 
-          <button className="flex items-end gap-2 p-0.5 opacity-55" disabled>
+          <button
+            className="action-sm flex items-end gap-2 p-0.5 opacity-55"
+            disabled
+          >
             <img
               src={unavailableIcon}
               className="h-5 w-5"

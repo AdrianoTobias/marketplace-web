@@ -163,7 +163,7 @@ export function EditProduct() {
         <div className="flex flex-col gap-2">
           <button
             onClick={handleGoBack}
-            className="action-md flex items-center gap-2 p-0.5 text-[var(--orange-base)] hover:text-[var(--orange-dark)]"
+            className="action-md text-orange-base hover:text-orange-dark flex items-center gap-2 p-0.5"
           >
             <img
               src={arrowLeftOrangeIcon}
@@ -173,9 +173,9 @@ export function EditProduct() {
             Voltar
           </button>
 
-          <h2 className="title-md text-[var(--gray-500)]">Editar produto</h2>
+          <h2 className="title-md text-gray-500">Editar produto</h2>
 
-          <p className="body-sm text-[var(--gray-300)]">
+          <p className="body-sm text-gray-300">
             Gerencie as informações do produto cadastrado
           </p>
         </div>
@@ -206,11 +206,9 @@ export function EditProduct() {
 
           <div className="flex w-[591px] flex-col gap-6 rounded-[20px] bg-white p-6">
             <div className="flex items-center justify-between">
-              <p className="title-sm text-[var(--gray-300)]">
-                Dados do produto
-              </p>
+              <p className="title-sm text-gray-300">Dados do produto</p>
 
-              <Tag bgColor="var(--blue-dark)" textColor="var(--white)">
+              <Tag bgColor="blue-dark" textColor="white">
                 {Status[product.status]}
               </Tag>
             </div>
@@ -285,8 +283,8 @@ export function EditProduct() {
               <div className="flex h-12 gap-3">
                 <Link to="/products" className="flex h-full w-full">
                   <button
-                    className={`action-md flex w-full items-center justify-center rounded-[.625rem] border border-[var(--orange-base)] bg-white px-4 text-[var(--orange-base)] transition-colors duration-200 
-                    ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:border-[var(--orange-dark)] hover:text-[var(--orange-dark)]'}
+                    className={`action-md border-orange-base text-orange-base flex w-full items-center justify-center rounded-[.625rem] border bg-white px-4 transition-colors duration-200 
+                    ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:border-orange-dark hover:text-orange-dark'}
                     `}
                     disabled={isSubmitting}
                   >
@@ -296,12 +294,12 @@ export function EditProduct() {
 
                 <button
                   type="submit"
-                  className={`action-md flex h-full w-full items-center justify-center rounded-[.625rem] bg-[var(--orange-base)] px-4 text-[var(--white)] transition-colors duration-200
+                  className={`action-md bg-orange-base flex h-full w-full items-center justify-center rounded-[.625rem] px-4 text-white transition-colors duration-200
                     ${
                       isSubmitting ||
                       ['sold', 'cancelled'].includes(product.status)
                         ? 'cursor-not-allowed opacity-55'
-                        : 'hover:bg-[var(--orange-dark)]'
+                        : 'hover:bg-orange-dark'
                     }
                 `}
                   disabled={
@@ -323,9 +321,7 @@ export function EditProduct() {
 
           <div className="flex w-[591px] flex-col gap-6 rounded-[20px] bg-white p-6">
             <div className="flex items-center justify-between">
-              <p className="title-sm text-[var(--gray-300)]">
-                Dados do produto
-              </p>
+              <p className="title-sm text-gray-300">Dados do produto</p>
 
               <Skeleton className="h-5 w-20 rounded-xl" />
             </div>
@@ -357,14 +353,14 @@ export function EditProduct() {
 
               <div className="flex h-12 gap-3">
                 <Link to="/products" className="flex h-full w-full">
-                  <button className="action-md flex w-full items-center justify-center rounded-[.625rem] border border-[var(--orange-base)] bg-white px-4 text-[var(--orange-base)]  transition-colors duration-200 hover:border-[var(--orange-dark)] hover:text-[var(--orange-dark)]">
+                  <button className="action-md border-orange-base text-orange-base hover:border-orange-dark hover:text-orange-dark flex w-full items-center justify-center rounded-[.625rem] border  bg-white px-4 transition-colors duration-200">
                     Cancelar
                   </button>
                 </Link>
 
                 <button
                   type="submit"
-                  className="action-md flex h-full w-full cursor-not-allowed items-center justify-center rounded-[.625rem] bg-[var(--orange-base)] px-4 text-[var(--white)] opacity-55 transition-colors duration-200"
+                  className="action-md bg-orange-base flex h-full w-full cursor-not-allowed items-center justify-center rounded-[.625rem] px-4 text-white opacity-55 transition-colors duration-200"
                   disabled={true}
                 >
                   Salvar e atualizar

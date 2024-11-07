@@ -55,20 +55,18 @@ export function AccountMenu() {
                 <img
                   src={profile?.avatar?.url}
                   alt="Imagem do usuário"
-                  className="h-8 w-8 rounded-lg border border-[var(--shape)] object-cover"
+                  className="border-shape h-8 w-8 rounded-lg border object-cover"
                 />
 
-                <p className="body-sm text-[var(--gray-300)]">
-                  {profile?.name}
-                </p>
+                <p className="body-sm text-gray-300">{profile?.name}</p>
               </>
             )}
           </div>
 
-          <div className="border-t border-[var(--shape)]"></div>
+          <div className="border-shape border-t"></div>
 
           <button
-            className="flex items-center justify-between  p-0.5 text-[var(--orange-base)] transition-colors duration-200 hover:text-[var(--orange-dark)]"
+            className="text-orange-base hover:text-orange-dark flex  items-center justify-between p-0.5 transition-colors duration-200"
             onClick={() => signOutFn()}
             disabled={isSigningOut}
           >

@@ -15,10 +15,7 @@ export function Error() {
 
       <p className="body-md">
         Voltar para o{' '}
-        <Link
-          to="/"
-          className="text-[var(--orange-base)] hover:text-[var(--orange-dark)]"
-        >
+        <Link to="/" className="text-orange-base hover:text-orange-dark">
           Dashboard
         </Link>
       </p>

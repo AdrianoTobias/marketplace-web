@@ -22,9 +22,9 @@ export function Products() {
       <Helmet title="Produtos" />
 
       <div className="mb-10 mt-16 flex flex-col gap-2">
-        <h2 className="title-md text-[var(--gray-500)]">Seus produtos</h2>
+        <h2 className="title-md text-gray-500">Seus produtos</h2>
 
-        <p className="body-sm text-[var(--gray-300)]">
+        <p className="body-sm text-gray-300">
           Acesse gerencie a sua lista de produtos à venda
         </p>
       </div>

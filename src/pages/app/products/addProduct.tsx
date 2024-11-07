@@ -138,9 +138,9 @@ export function AddProduct() {
       <Helmet title="Cadastro de Produto" />
 
       <div className="mb-10 mt-16 flex flex-col gap-2">
-        <h2 className="title-md text-[var(--gray-500)]">Novo produto</h2>
+        <h2 className="title-md text-gray-500">Novo produto</h2>
 
-        <p className="body-sm text-[var(--gray-300)]">
+        <p className="body-sm text-gray-300">
           Cadastre um produto para venda no Marketplace
         </p>
       </div>
@@ -160,7 +160,7 @@ export function AddProduct() {
         </div>
 
         <div className="flex w-[591px] flex-col gap-6 rounded-[20px] bg-white p-6">
-          <p className="title-sm text-[var(--gray-300)]">Dados do produto</p>
+          <p className="title-sm text-gray-300">Dados do produto</p>
 
           <div className="flex flex-col gap-10">
             <div className="flex flex-col gap-5">
@@ -224,8 +224,8 @@ export function AddProduct() {
             <div className="flex h-12 gap-3">
               <Link to="/products" className="flex h-full w-full">
                 <button
-                  className={`action-md flex w-full items-center justify-center rounded-[.625rem] border border-[var(--orange-base)] bg-white px-4 text-[var(--orange-base)] transition-colors duration-200 
-                    ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:border-[var(--orange-dark)] hover:text-[var(--orange-dark)]'}
+                  className={`action-md border-orange-base text-orange-base flex w-full items-center justify-center rounded-[.625rem] border bg-white px-4 transition-colors duration-200 
+                    ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:border-orange-dark hover:text-orange-dark'}
                     `}
                   disabled={isSubmitting}
                 >
@@ -235,8 +235,8 @@ export function AddProduct() {
 
               <button
                 type="submit"
-                className={`action-md flex h-full w-full items-center justify-center rounded-[.625rem] bg-[var(--orange-base)] px-4 text-[var(--white)] transition-colors duration-200
-                    ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:bg-[var(--orange-dark)]'}
+                className={`action-md bg-orange-base flex h-full w-full items-center justify-center rounded-[.625rem] px-4 text-white transition-colors duration-200
+                    ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:bg-orange-dark'}
                 `}
                 disabled={isSubmitting}
               >

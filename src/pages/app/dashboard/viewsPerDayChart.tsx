@@ -26,7 +26,7 @@ const CustomTooltip = ({
 
     return (
       <div className="box-shadow flex w-[146px] flex-col gap-2 rounded-lg bg-white p-3">
-        <p className="label-sm text-[var(--gray-400)]">{`${day} de ${monthName}`}</p>
+        <p className="label-sm text-gray-400">{`${day} de ${monthName}`}</p>
 
         <div className="flex items-center gap-2">
           <img
@@ -35,9 +35,7 @@ const CustomTooltip = ({
             alt="Ícone de múltiplos usuários"
           />
 
-          <p className="body-xs text-[var(--gray-300)]">
-            {payload[0].value} visitantes
-          </p>
+          <p className="body-xs text-gray-300">{payload[0].value} visitantes</p>
         </div>
       </div>
     )
@@ -68,7 +66,7 @@ export function ViewsPerDayChart() {
   return (
     <div className="flex h-full flex-col gap-7">
       <div className="flex items-center justify-between">
-        <h2 className="title-sm text-[var(--gray-500)]">Visitantes</h2>
+        <h2 className="title-sm text-gray-500">Visitantes</h2>
 
         <div className="flex items-center justify-center gap-2">
           <img
@@ -77,7 +75,7 @@ export function ViewsPerDayChart() {
             alt="Íconde de um calendário"
           />
 
-          <span className="label-sm text-[var(--gray-300)]">
+          <span className="label-sm text-gray-300">
             {formattedDateThirtyDaysAgo} - {formattedCurrentDate}
           </span>
         </div>

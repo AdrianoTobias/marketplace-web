@@ -40,7 +40,7 @@ export function CustomSelect({
           <>
             <div
               className={`flex cursor-pointer items-center gap-2 border-b-[1px] px-[2px] py-3.5
-                ${value ? 'border-[var(--gray-400)] ' : 'border-[var(--gray-100)] '}`}
+                ${value ? 'border-gray-400 ' : 'border-gray-100 '}`}
               onClick={toggleOpen}
             >
               {icon && (
@@ -49,13 +49,13 @@ export function CustomSelect({
 
               <span
                 className={`body-md flex-1 
-                    ${value ? 'text-[var(--gray-400)]' : 'text-[var(--gray-200)]'}`}
+                    ${value ? 'text-gray-400' : 'text-gray-200'}`}
               >
                 {value || placeholder}
               </span>
 
               {value && (
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--shape)]">
+                <span className="bg-shape flex h-6 w-6 items-center justify-center rounded-full">
                   <img
                     src={cancelIcon}
                     onClick={(e) => {
@@ -78,7 +78,7 @@ export function CustomSelect({
             </div>
 
             {isOpen && (
-              <div className="absolute mt-1 flex w-full flex-col rounded-lg border border-[var(--shape)] bg-[var(--white)] shadow-lg">
+              <div className="border-shape absolute mt-1 flex w-full flex-col rounded-lg border bg-white shadow-lg">
                 {options.map((option) => (
                   <div
                     key={option.value}
@@ -92,8 +92,8 @@ export function CustomSelect({
                       className={`body-sm flex h-full w-full items-center 
                         ${
                           value === option.value
-                            ? 'text-[var(--orange-base)]'
-                            : 'text-[var(--gray-300)] hover:text-[var(--orange-dark)]'
+                            ? 'text-orange-base'
+                            : 'hover:text-orange-dark text-gray-300'
                         }
                         `}
                     >

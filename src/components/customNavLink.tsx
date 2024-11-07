@@ -7,8 +7,8 @@ export function CustomNavLink(props: NavLinkProps) {
         flex h-10 items-center gap-2 rounded-[10px] px-4
         ${
           isActive
-            ? 'action-sm pointer-events-none bg-[var(--shape)] text-[var(--orange-base)]'
-            : 'body-sm text-[var(--gray-300)] hover:text-[var(--orange-dark)]'
+            ? 'action-sm bg-shape text-orange-base pointer-events-none'
+            : 'body-sm hover:text-orange-dark text-gray-300'
         }
       `}
       {...props}

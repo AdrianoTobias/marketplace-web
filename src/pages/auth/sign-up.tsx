@@ -114,16 +114,16 @@ export function SignUp() {
     <>
       <Helmet title="Cadastro" />
 
-      <div className="scrollbar flex h-full w-full flex-col gap-20 overflow-y-scroll rounded-[32px] bg-[var(--white)] px-20 py-[4.5rem]">
+      <div className="scrollbar flex h-full w-full flex-col gap-20 overflow-y-scroll rounded-[32px] bg-white px-20 py-[4.5rem]">
         <div className="flex flex-col gap-10">
           <div className="flex flex-col gap-2 ">
-            <h2 className="title-md text-[var(--gray-500)]">Crie sua conta</h2>
+            <h2 className="title-md text-gray-500">Crie sua conta</h2>
             <p className="body-sm">Informe seus dados pessoais e de acesso </p>
           </div>
 
           <form className="space-y-12" onSubmit={handleSubmit(handleSignUp)}>
             <div className="space-y-5">
-              <h3 className="title-sm text-[var(--gray-500)]">Perfil</h3>
+              <h3 className="title-sm text-gray-500">Perfil</h3>
 
               <div>
                 <div className="h-[120px] w-[120px] ">
@@ -169,7 +169,7 @@ export function SignUp() {
             </div>
 
             <div className="space-y-5">
-              <h3 className="title-sm text-[var(--gray-500)]">Acesso</h3>
+              <h3 className="title-sm text-gray-500">Acesso</h3>
 
               <div className="flex flex-col">
                 <Label htmlFor="email">E-mail</Label>
@@ -219,8 +219,8 @@ export function SignUp() {
             </div>
 
             <button
-              className={`mt-12 flex h-14 w-full items-center justify-between rounded-[.625rem] bg-[var(--orange-base)] px-5 text-[var(--white)] transition-colors duration-200
-              ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:bg-[var(--orange-dark)]'}`}
+              className={`bg-orange-base mt-12 flex h-14 w-full items-center justify-between rounded-[.625rem] px-5 text-white transition-colors duration-200
+              ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:bg-orange-dark'}`}
               disabled={isSubmitting}
               type="submit"
             >
@@ -235,13 +235,13 @@ export function SignUp() {
         </div>
 
         <div className="mt-auto space-y-5">
-          <p className="body-md text-[var(--gray-300)]">Já tem uma conta?</p>
+          <p className="body-md text-gray-300">Já tem uma conta?</p>
 
           <div>
             <Link to="/sign-in">
               <button
-                className={`flex h-14 w-full items-center justify-between rounded-[.625rem] border-[1px] border-[var(--orange-base)] px-5 text-[var(--orange-base)] transition-colors duration-200                            
-                ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:border-[var(--orange-dark)] hover:text-[var(--orange-dark)]'}`}
+                className={`border-orange-base text-orange-base flex h-14 w-full items-center justify-between rounded-[.625rem] border-[1px] px-5 transition-colors duration-200                            
+                ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:border-orange-dark hover:text-orange-dark'}`}
                 disabled={isSubmitting}
               >
                 <span className="action-md">Acessar</span>

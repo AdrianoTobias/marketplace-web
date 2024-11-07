@@ -25,7 +25,7 @@ export const InputWithIcon = React.forwardRef<
 
   return (
     <div
-      className={`flex items-center gap-2 border-b-[1px] border-[var(--gray-100)] px-[2px] py-3 focus-within:border-[var(--gray-400)] 
+      className={`flex items-center gap-2 border-b-[1px] border-gray-100 px-[2px] py-3 focus-within:border-gray-400 
         
         ${className}`}
     >
@@ -33,7 +33,7 @@ export const InputWithIcon = React.forwardRef<
       <input
         type={type === 'password' && !showPassword ? 'password' : 'text'}
         placeholder={placeholder}
-        className="body-md my-[2.5px] w-full text-[var(--gray-400)] placeholder-[var(--gray-200)] focus:outline-none"
+        className="body-md my-[2.5px] w-full text-gray-400 placeholder-gray-200 focus:outline-none"
         {...props}
         ref={ref}
       />

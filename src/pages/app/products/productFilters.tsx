@@ -59,7 +59,7 @@ export function ProductFilters() {
   }
 
   return (
-    <div className="flex h-full w-full flex-col gap-6 rounded-[20px] bg-[var(--white)] p-6">
+    <div className="flex h-full w-full flex-col gap-6 rounded-[20px] bg-white p-6">
       <h3 className="title-sm text-[var(gray-300)]">Filtrar</h3>
 
       <form
@@ -85,8 +85,8 @@ export function ProductFilters() {
 
         <button
           type="submit"
-          className={`action-md flex h-14 w-full items-center justify-center rounded-[.625rem] bg-[var(--orange-base)] px-4 text-[var(--white)] transition-colors duration-200
-              ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:bg-[var(--orange-dark)]'}`}
+          className={`action-md bg-orange-base flex h-14 w-full items-center justify-center rounded-[.625rem] px-4 text-white transition-colors duration-200
+              ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:bg-orange-dark'}`}
           disabled={isSubmitting}
         >
           Aplicar filtro
