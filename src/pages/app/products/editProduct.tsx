@@ -9,7 +9,6 @@ import { z } from 'zod'
 import { editProduct } from '../../../api/edit-product'
 import { getProductById } from '../../../api/get-product-by-id'
 import { getProductCategories } from '../../../api/get-product-categories'
-import { Status } from '../../../api/types/product'
 import { uploadAttachments } from '../../../api/upload-attachments'
 import arrowLeftOrangeIcon from '../../../assets/icons/arrow-left-orange.svg'
 import realCurrencyIcon from '../../../assets/icons/real-currency-orange.svg'
@@ -21,7 +20,7 @@ import { InputWithIcon } from '../../../components/inputWithIcon'
 import { Label } from '../../../components/label'
 import { Skeleton } from '../../../components/skeleton'
 import { ChangeProductStatus } from './changeProductStatus'
-import { Tag } from './tag'
+import { StatusTag } from './statusTag'
 
 const ACCEPTED_IMAGE_TYPES = ['image/png']
 
@@ -208,9 +207,7 @@ export function EditProduct() {
             <div className="flex items-center justify-between">
               <p className="title-sm text-gray-300">Dados do produto</p>
 
-              <Tag bgColor="blue-dark" textColor="white">
-                {Status[product.status]}
-              </Tag>
+              <StatusTag productStatus={product.status} />
             </div>
 
             <div className="flex flex-col gap-10">

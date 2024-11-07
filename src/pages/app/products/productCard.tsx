@@ -1,5 +1,6 @@
-import { product, Status } from '../../../api/types/product'
+import { product } from '../../../api/types/product'
 import { Skeleton } from '../../../components/skeleton'
+import { StatusTag } from './statusTag'
 import { Tag } from './tag'
 
 export function ProductCard({
@@ -10,14 +11,6 @@ export function ProductCard({
   category,
   attachments,
 }: product) {
-  const getStatusTagColor = () => {
-    if (status === 'available') return 'blue-dark)'
-
-    if (status === 'sold') return 'success)'
-
-    return 'gray-300)'
-  }
-
   return (
     <div className="hover:border-blue-base relative flex w-[331px] cursor-pointer flex-col gap-1 rounded-[20px] border-2 border-transparent bg-white p-1">
       <div className="h-36">
@@ -50,13 +43,9 @@ export function ProductCard({
       </div>
 
       <div className="end absolute right-3 top-3 flex h-5 gap-1">
-        <Tag bgColor={getStatusTagColor()} textColor="white">
-          {Status[status]}
-        </Tag>
+        <StatusTag productStatus={status} />
 
-        <Tag bgColor="gray-400" textColor="white">
-          {category?.title}
-        </Tag>
+        <Tag color="gray400">{category?.title}</Tag>
       </div>
     </div>
   )
