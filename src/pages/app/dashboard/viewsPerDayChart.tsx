@@ -13,6 +13,7 @@ import {
 import { getViewsPerDayInLast30Days } from '../../../api/get-views-per-day-in-last-30-days'
 import calendarIcon from '../../../assets//icons/calendar.svg'
 import userMultipleIcon from '../../../assets//icons/user-multiple.svg'
+import Spinner from '../../../components/sppiner'
 
 const CustomTooltip = ({
   active,
@@ -45,7 +46,7 @@ const CustomTooltip = ({
 }
 
 export function ViewsPerDayChart() {
-  const { data: viewsPerDay } = useQuery({
+  const { data: viewsPerDay, isLoading: isLoadingViewsPerDay } = useQuery({
     queryKey: ['metrics', 'get-views-per-day-in-last-30-days'],
     queryFn: getViewsPerDayInLast30Days,
   })
@@ -81,36 +82,40 @@ export function ViewsPerDayChart() {
         </div>
       </div>
 
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={viewsPerDay} style={{ fontSize: 12 }}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis
-            stroke="#949494"
-            dataKey="date"
-            tickFormatter={(dateString: string) =>
-              new Date(dateString).getDate().toString()
-            }
-            axisLine={false}
-            tickLine={false}
-            dy={18}
-          />
-          <YAxis
-            stroke="#949494"
-            axisLine={false}
-            tickLine={false}
-            width={30}
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <Line
-            stroke="#5EC5FD"
-            type="natural"
-            strokeWidth={2}
-            dataKey="amount"
-            activeDot={{ r: 5 }}
-            // dot={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      {isLoadingViewsPerDay ? (
+        <Spinner />
+      ) : (
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={viewsPerDay} style={{ fontSize: 12 }}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis
+              stroke="#949494"
+              dataKey="date"
+              tickFormatter={(dateString: string) =>
+                new Date(dateString).getDate().toString()
+              }
+              axisLine={false}
+              tickLine={false}
+              dy={18}
+            />
+            <YAxis
+              stroke="#949494"
+              axisLine={false}
+              tickLine={false}
+              width={30}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Line
+              stroke="#5EC5FD"
+              type="natural"
+              strokeWidth={2}
+              dataKey="amount"
+              activeDot={{ r: 5 }}
+              // dot={false}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      )}
     </div>
   )
 }
