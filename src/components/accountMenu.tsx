@@ -43,7 +43,7 @@ export function AccountMenu() {
       </div>
 
       {isOpen && (
-        <div className="absolute right-0 mt-3 flex w-[168px] flex-col gap-5 rounded-[12px] bg-white p-4 shadow-lg">
+        <div className="absolute right-0 z-10 mt-3 flex w-[168px] flex-col gap-5 rounded-[12px] bg-white p-4 shadow-lg">
           <div className="flex items-center gap-3">
             {isLoadingProfile ? (
               <>
