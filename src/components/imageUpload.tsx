@@ -24,7 +24,7 @@ export function ImageUpload({
   }
 
   return (
-    <div className="bg-shape relative flex h-full w-full items-center justify-center overflow-hidden rounded-xl">
+    <label className="group relative flex h-full w-full items-center justify-center overflow-hidden rounded-xl bg-shape">
       <input
         type="file"
         className={`absolute inset-0 opacity-0
@@ -41,25 +41,34 @@ export function ImageUpload({
         }}
       />
 
-      {preview ? (
+      {preview && (
         <img
           src={preview}
-          className="h-full w-full object-cover"
+          className="absolute h-full w-full object-cover"
           alt="Preview da imagem"
         />
-      ) : (
-        <div className="flex max-w-[159px] flex-col items-center justify-center gap-4">
-          <img
-            src={imageUploadIcon}
-            className="h-8 w-8"
-            alt="Ícone de upload de imagem"
-          />
-
-          {placeholder && (
-            <p className="body-sm text-center text-gray-300">{placeholder}</p>
-          )}
-        </div>
       )}
-    </div>
+
+      <div
+        className={`absolute inset-0 flex flex-col items-center justify-center gap-4
+          ${preview && 'bg-black bg-opacity-60 opacity-0'}
+          ${!disabled && 'cursor-pointer transition-opacity group-hover:opacity-100'}`}
+      >
+        <img
+          src={imageUploadIcon}
+          className="h-8 w-8"
+          alt="Ícone de upload de imagem"
+        />
+
+        {placeholder && (
+          <p
+            className={`body-sm max-w-[159px] text-center
+            ${preview ? 'text-white' : 'text-gray-300'}`}
+          >
+            {placeholder}
+          </p>
+        )}
+      </div>
+    </label>
   )
 }
