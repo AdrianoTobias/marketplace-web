@@ -13,6 +13,7 @@ export function AccountMenu() {
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
     queryKey: ['profile'],
     queryFn: getProfile,
+    staleTime: Infinity,
   })
 
   const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
@@ -55,7 +56,7 @@ export function AccountMenu() {
                 <img
                   src={profile?.avatar?.url}
                   alt="Imagem do usuário"
-                  className="border-shape h-8 w-8 rounded-lg border object-cover"
+                  className="h-8 w-8 rounded-lg border border-shape object-cover"
                 />
 
                 <p className="body-sm text-gray-300">{profile?.name}</p>
@@ -63,10 +64,10 @@ export function AccountMenu() {
             )}
           </div>
 
-          <div className="border-shape border-t"></div>
+          <div className="border-t border-shape"></div>
 
           <button
-            className="text-orange-base hover:text-orange-dark flex  items-center justify-between p-0.5 transition-colors duration-200"
+            className="flex items-center justify-between  p-0.5 text-orange-base transition-colors duration-200 hover:text-orange-dark"
             onClick={() => signOutFn()}
             disabled={isSigningOut}
           >
