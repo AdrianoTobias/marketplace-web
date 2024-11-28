@@ -27,9 +27,7 @@ const signUpFormSchema = z
   .object({
     avatar: z
       .custom<FileList>()
-      .refine((files) => files && files.length > 0, {
-        message: 'A imagem é obrigatória',
-      })
+      .optional()
       .refine(
         (files) => {
           return Array.from(files ?? []).every((file) =>
@@ -219,7 +217,7 @@ export function SignUp() {
             </div>
 
             <button
-              className={`bg-orange-base mt-12 flex h-14 w-full items-center justify-between rounded-[.625rem] px-5 text-white transition-colors duration-200
+              className={`mt-12 flex h-14 w-full items-center justify-between rounded-[.625rem] bg-orange-base px-5 text-white transition-colors duration-200
               ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:bg-orange-dark'}`}
               disabled={isSubmitting}
               type="submit"
@@ -240,7 +238,7 @@ export function SignUp() {
           <div>
             <Link to="/sign-in">
               <button
-                className={`border-orange-base text-orange-base flex h-14 w-full items-center justify-between rounded-[.625rem] border-[1px] px-5 transition-colors duration-200                            
+                className={`flex h-14 w-full items-center justify-between rounded-[.625rem] border-[1px] border-orange-base px-5 text-orange-base transition-colors duration-200                            
                 ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:border-orange-dark hover:text-orange-dark'}`}
                 disabled={isSubmitting}
               >
