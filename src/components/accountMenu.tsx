@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { getProfile } from '../api/get-profile'
 import { signOut } from '../api/sign-out'
 import logoutIcon from '../assets/icons/logout.svg'
+import { queryClient } from '../lib/react-query'
 import { Skeleton } from './skeleton'
 
 export function AccountMenu() {
@@ -19,6 +20,8 @@ export function AccountMenu() {
   const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
     mutationFn: signOut,
     onSuccess: () => {
+      queryClient.clear()
+
       navigate('/sign-in', { replace: true })
     },
   })
