@@ -101,6 +101,7 @@ export function AddProduct() {
   const { data: categories = [] } = useQuery({
     queryKey: ['product-categories'],
     queryFn: getProductCategories,
+    staleTime: Infinity,
   })
 
   const categoriesToSelect = categories?.map((category) => ({
