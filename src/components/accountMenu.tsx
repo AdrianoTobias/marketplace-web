@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { getProfile } from '../api/get-profile'
 import { signOut } from '../api/sign-out'
 import logoutIcon from '../assets/icons/logout.svg'
+import defaultAvatar from '../assets/icons/user.svg'
 import { queryClient } from '../lib/react-query'
 import { Skeleton } from './skeleton'
 
@@ -39,7 +40,7 @@ export function AccountMenu() {
           <Skeleton className="h-12 w-12 rounded-[10px]" />
         ) : (
           <img
-            src={profile?.avatar?.url}
+            src={profile?.avatar?.url || defaultAvatar}
             className="h-12 w-12 cursor-pointer rounded-[10px] object-cover"
             alt="Imagem do usuário"
           />
@@ -57,7 +58,7 @@ export function AccountMenu() {
             ) : (
               <>
                 <img
-                  src={profile?.avatar?.url}
+                  src={profile?.avatar?.url || defaultAvatar}
                   alt="Imagem do usuário"
                   className="h-8 w-8 rounded-lg border border-shape object-cover"
                 />
