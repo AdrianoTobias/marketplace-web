@@ -9,6 +9,7 @@ export function AvailableProductsInLast30Days() {
     useQuery({
       queryKey: ['metrics', 'available-roducts-in-last-30-days'],
       queryFn: getAvailableProductsInLast30Days,
+      staleTime: Infinity,
     })
 
   return (

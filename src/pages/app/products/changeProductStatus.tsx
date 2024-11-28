@@ -28,18 +28,24 @@ export function ChangeProductStatus({
     mutationFn: changeProductStatus,
     onSuccess(_, { id, status }) {
       const cached = queryClient.getQueryData<GetProductByIdResponse>([
-        'get-product-by-id',
+        'product',
         id,
       ])
 
       if (cached) {
-        queryClient.setQueryData<GetProductByIdResponse>(
-          ['get-product-by-id', id],
-          {
-            product: { ...cached.product, status },
-          },
-        )
+        queryClient.setQueryData<GetProductByIdResponse>(['product', id], {
+          product: { ...cached.product, status },
+        })
       }
+
+      queryClient.invalidateQueries({ queryKey: ['products'] })
+
+      queryClient.invalidateQueries({
+        queryKey: ['metrics', 'sold-products-in-last-30-days'],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['metrics', 'available-roducts-in-last-30-days'],
+      })
     },
   })
 
@@ -57,7 +63,7 @@ export function ChangeProductStatus({
   }
 
   return (
-    <div className="text-orange-base flex gap-4">
+    <div className="flex gap-4 text-orange-base">
       {productStatus === 'available' ? (
         <>
           <button

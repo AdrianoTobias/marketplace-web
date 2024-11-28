@@ -5,9 +5,9 @@ export interface EditProductBody {
   id: string
   title: string
   categoryId: string
-  description: string | null
+  description: string
   priceInCents: number
-  attachmentsIds: (string | null)[]
+  attachmentsIds: string[]
 }
 
 interface EditProductResponse {

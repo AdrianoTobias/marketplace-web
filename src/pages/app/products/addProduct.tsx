@@ -16,6 +16,7 @@ import { FieldErrorMessage } from '../../../components/fieldErrorMessage'
 import { ImageUpload } from '../../../components/imageUpload'
 import { InputWithIcon } from '../../../components/inputWithIcon'
 import { Label } from '../../../components/label'
+import { queryClient } from '../../../lib/react-query'
 
 const ACCEPTED_IMAGE_TYPES = ['image/png']
 
@@ -88,6 +89,13 @@ export function AddProduct() {
 
   const { mutateAsync: addProduct } = useMutation({
     mutationFn: createProduct,
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ['products'] })
+
+      queryClient.invalidateQueries({
+        queryKey: ['metrics', 'available-roducts-in-last-30-days'],
+      })
+    },
   })
 
   const { data: categories = [] } = useQuery({
@@ -224,7 +232,7 @@ export function AddProduct() {
             <div className="flex h-12 gap-3">
               <Link to="/products" className="flex h-full w-full">
                 <button
-                  className={`action-md border-orange-base text-orange-base flex w-full items-center justify-center rounded-[.625rem] border bg-white px-4 transition-colors duration-200 
+                  className={`action-md flex w-full items-center justify-center rounded-[.625rem] border border-orange-base bg-white px-4 text-orange-base transition-colors duration-200 
                     ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:border-orange-dark hover:text-orange-dark'}
                     `}
                   disabled={isSubmitting}
@@ -235,7 +243,7 @@ export function AddProduct() {
 
               <button
                 type="submit"
-                className={`action-md bg-orange-base flex h-full w-full items-center justify-center rounded-[.625rem] px-4 text-white transition-colors duration-200
+                className={`action-md flex h-full w-full items-center justify-center rounded-[.625rem] bg-orange-base px-4 text-white transition-colors duration-200
                     ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:bg-orange-dark'}
                 `}
                 disabled={isSubmitting}

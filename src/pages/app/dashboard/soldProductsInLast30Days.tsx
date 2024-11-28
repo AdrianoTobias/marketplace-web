@@ -8,6 +8,7 @@ export function SoldProductsInLast30Days() {
   const { data: soldProducts, isLoading: isLoadingSoldProducts } = useQuery({
     queryKey: ['metrics', 'sold-products-in-last-30-days'],
     queryFn: getSoldProductsInLast30Days,
+    staleTime: Infinity,
   })
 
   return (

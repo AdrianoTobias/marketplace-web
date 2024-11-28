@@ -13,8 +13,9 @@ export function Products() {
   const status = searchParams.get('status')
 
   const { data: products, isLoading: isLoadingProducts } = useQuery({
-    queryKey: ['seller-products', search, status],
+    queryKey: ['products', search, status],
     queryFn: () => getSellerProducts({ search, status }),
+    staleTime: Infinity,
   })
 
   return (

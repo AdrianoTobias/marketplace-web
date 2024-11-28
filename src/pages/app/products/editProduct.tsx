@@ -7,7 +7,10 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { editProduct } from '../../../api/edit-product'
-import { getProductById } from '../../../api/get-product-by-id'
+import {
+  getProductById,
+  GetProductByIdResponse,
+} from '../../../api/get-product-by-id'
 import { getProductCategories } from '../../../api/get-product-categories'
 import { uploadAttachments } from '../../../api/upload-attachments'
 import arrowLeftOrangeIcon from '../../../assets/icons/arrow-left-orange.svg'
@@ -19,6 +22,7 @@ import { ImageUpload } from '../../../components/imageUpload'
 import { InputWithIcon } from '../../../components/inputWithIcon'
 import { Label } from '../../../components/label'
 import { Skeleton } from '../../../components/skeleton'
+import { queryClient } from '../../../lib/react-query'
 import { ChangeProductStatus } from './changeProductStatus'
 import { StatusTag } from './statusTag'
 
@@ -70,8 +74,9 @@ export function EditProduct() {
   const navigate = useNavigate()
 
   const { data: { product } = {} } = useQuery({
-    queryKey: ['get-product-by-id', id],
+    queryKey: ['product', id],
     queryFn: () => getProductById({ id }),
+    staleTime: Infinity,
   })
 
   const {
@@ -107,6 +112,23 @@ export function EditProduct() {
 
   const { mutateAsync: editProductFn } = useMutation({
     mutationFn: editProduct,
+    onSuccess({ product: editedProduct }) {
+      queryClient.invalidateQueries({ queryKey: ['products'] })
+
+      const cached = queryClient.getQueryData<GetProductByIdResponse>([
+        'product',
+        editedProduct.id,
+      ])
+
+      if (cached) {
+        queryClient.setQueryData<GetProductByIdResponse>(
+          ['product', editedProduct.id],
+          {
+            product: { ...cached.product, ...editedProduct },
+          },
+        )
+      }
+    },
   })
 
   const { data: categories = [] } = useQuery({
@@ -162,7 +184,7 @@ export function EditProduct() {
         <div className="flex flex-col gap-2">
           <button
             onClick={handleGoBack}
-            className="action-md text-orange-base hover:text-orange-dark flex items-center gap-2 p-0.5"
+            className="action-md flex items-center gap-2 p-0.5 text-orange-base hover:text-orange-dark"
           >
             <img
               src={arrowLeftOrangeIcon}
@@ -280,7 +302,7 @@ export function EditProduct() {
               <div className="flex h-12 gap-3">
                 <Link to="/products" className="flex h-full w-full">
                   <button
-                    className={`action-md border-orange-base text-orange-base flex w-full items-center justify-center rounded-[.625rem] border bg-white px-4 transition-colors duration-200 
+                    className={`action-md flex w-full items-center justify-center rounded-[.625rem] border border-orange-base bg-white px-4 text-orange-base transition-colors duration-200 
                     ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:border-orange-dark hover:text-orange-dark'}
                     `}
                     disabled={isSubmitting}
@@ -291,7 +313,7 @@ export function EditProduct() {
 
                 <button
                   type="submit"
-                  className={`action-md bg-orange-base flex h-full w-full items-center justify-center rounded-[.625rem] px-4 text-white transition-colors duration-200
+                  className={`action-md flex h-full w-full items-center justify-center rounded-[.625rem] bg-orange-base px-4 text-white transition-colors duration-200
                     ${
                       isSubmitting ||
                       ['sold', 'cancelled'].includes(product.status)
@@ -350,14 +372,14 @@ export function EditProduct() {
 
               <div className="flex h-12 gap-3">
                 <Link to="/products" className="flex h-full w-full">
-                  <button className="action-md border-orange-base text-orange-base hover:border-orange-dark hover:text-orange-dark flex w-full items-center justify-center rounded-[.625rem] border  bg-white px-4 transition-colors duration-200">
+                  <button className="action-md flex w-full items-center justify-center rounded-[.625rem] border border-orange-base bg-white px-4 text-orange-base  transition-colors duration-200 hover:border-orange-dark hover:text-orange-dark">
                     Cancelar
                   </button>
                 </Link>
 
                 <button
                   type="submit"
-                  className="action-md bg-orange-base flex h-full w-full cursor-not-allowed items-center justify-center rounded-[.625rem] px-4 text-white opacity-55 transition-colors duration-200"
+                  className="action-md flex h-full w-full cursor-not-allowed items-center justify-center rounded-[.625rem] bg-orange-base px-4 text-white opacity-55 transition-colors duration-200"
                   disabled={true}
                 >
                   Salvar e atualizar
