@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import { Store04Icon } from 'hugeicons-react'
 
 import { getAvailableProductsInLast30Days } from '../../../api/get-available-products-in-last-30-days'
-import storeIcon from '../../../assets//icons/store.svg'
 import { MetricCard } from './metricCard'
 
 export function AvailableProductsInLast30Days() {
@@ -14,7 +14,7 @@ export function AvailableProductsInLast30Days() {
 
   return (
     <MetricCard
-      icon={storeIcon}
+      icon={<Store04Icon className="h-10 w-10 text-blue-dark" />}
       amount={availableProducts?.amount}
       metric="Produtos anunciados"
       isLoading={isLoadingAvailableProducts}

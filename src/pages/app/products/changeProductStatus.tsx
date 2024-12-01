@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { Tick02Icon, UnavailableIcon } from 'hugeicons-react'
 import { toast } from 'sonner'
 
 import {
@@ -7,8 +8,6 @@ import {
 } from '../../../api/change-product-status'
 import { GetProductByIdResponse } from '../../../api/get-product-by-id'
 import { Status } from '../../../api/types/product'
-import tickIcon from '../../../assets/icons/tick.svg'
-import unavailableIcon from '../../../assets/icons/unavailable.svg'
 import { Skeleton } from '../../../components/skeleton'
 import { queryClient } from '../../../lib/react-query'
 
@@ -78,7 +77,7 @@ export function ChangeProductStatus({
               handleChangeProductStatus({ id: productId, status: 'sold' })
             }
           >
-            <img src={tickIcon} className="h-5 w-5" alt="Íconde de ticado" />
+            <Tick02Icon className="h-5 w-5" />
             Marcar como vendido
           </button>
 
@@ -94,11 +93,7 @@ export function ChangeProductStatus({
               handleChangeProductStatus({ id: productId, status: 'cancelled' })
             }
           >
-            <img
-              src={unavailableIcon}
-              className="h-5 w-5"
-              alt="Íconde de indisponível"
-            />
+            <UnavailableIcon className="h-5 w-5" />
             Desativar anúncio
           </button>
         </>
@@ -116,7 +111,7 @@ export function ChangeProductStatus({
               handleChangeProductStatus({ id: productId, status: 'available' })
             }
           >
-            <img src={tickIcon} className="h-5 w-5" alt="Íconde de ticado" />
+            <Tick02Icon className="h-5 w-5" />
             Marcar como disponível
           </button>
 
@@ -124,11 +119,7 @@ export function ChangeProductStatus({
             className="action-sm flex items-end gap-2 p-0.5 opacity-55"
             disabled
           >
-            <img
-              src={unavailableIcon}
-              className="h-5 w-5"
-              alt="Íconde de indisponível"
-            />
+            <UnavailableIcon className="h-5 w-5" />
             Produto vendiddo
           </button>
         </>
@@ -146,7 +137,7 @@ export function ChangeProductStatus({
               handleChangeProductStatus({ id: productId, status: 'available' })
             }
           >
-            <img src={tickIcon} className="h-5 w-5" alt="Íconde de ticado" />
+            <Tick02Icon className="h-5 w-5" />
             Reativar produto
           </button>
 
@@ -154,11 +145,7 @@ export function ChangeProductStatus({
             className="action-sm flex items-end gap-2 p-0.5 opacity-55"
             disabled
           >
-            <img
-              src={unavailableIcon}
-              className="h-5 w-5"
-              alt="Íconde de indisponível"
-            />
+            <UnavailableIcon className="h-5 w-5" />
             Produto desabilitado
           </button>
         </>

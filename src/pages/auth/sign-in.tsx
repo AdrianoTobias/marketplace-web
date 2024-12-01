@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { AccessIcon, ArrowRight02Icon, Mail02Icon } from 'hugeicons-react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
@@ -7,10 +8,6 @@ import { toast } from 'sonner'
 import z from 'zod'
 
 import { signIn } from '../../api/sign-in'
-import accessIcon from '../../assets/icons/access.svg'
-import arrowRightIconOrange from '../../assets/icons/arrow-right-orange.svg'
-import arrowRightIconWhite from '../../assets/icons/arrow-right-white.svg'
-import mailIcon from '../../assets/icons/mail.svg'
 import { FieldErrorMessage } from '../../components/fieldErrorMessage'
 import { InputWithIcon } from '../../components/inputWithIcon'
 import { Label } from '../../components/label'
@@ -70,7 +67,7 @@ export function SignIn() {
             <div className="flex flex-col">
               <Label htmlFor="email">E-mail</Label>
               <InputWithIcon
-                icon={mailIcon}
+                icon={<Mail02Icon />}
                 id="email"
                 placeholder="Seu e-mail cadastrado"
                 {...register('email')}
@@ -84,7 +81,7 @@ export function SignIn() {
             <div className="flex flex-col">
               <Label htmlFor="password">Senha</Label>
               <InputWithIcon
-                icon={accessIcon}
+                icon={<AccessIcon />}
                 id="password"
                 placeholder="Sua senha de acesso"
                 type="password"
@@ -97,17 +94,13 @@ export function SignIn() {
             </div>
 
             <button
-              className={`bg-orange-base mt-12 flex h-14 w-full items-center justify-between rounded-[.625rem] px-5 text-white transition-colors duration-200
+              className={`mt-12 flex h-14 w-full items-center justify-between rounded-[.625rem] bg-orange-base px-5 text-white transition-colors duration-200
               ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:bg-orange-dark'}`}
               disabled={isSubmitting}
               type="submit"
             >
               <span className="action-md">Acessar</span>
-              <img
-                src={arrowRightIconWhite}
-                className="h-6 w-6"
-                alt="Seta para a direita"
-              />
+              <ArrowRight02Icon className="h-6 w-6" />
             </button>
           </form>
 
@@ -117,16 +110,12 @@ export function SignIn() {
             <div>
               <Link to="/sign-up">
                 <button
-                  className={`border-orange-base text-orange-base flex h-14 w-full items-center justify-between rounded-[.625rem] border-[1px] px-5 transition-colors duration-200                            
+                  className={`flex h-14 w-full items-center justify-between rounded-[.625rem] border-[1px] border-orange-base px-5 text-orange-base transition-colors duration-200                            
                 ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:border-orange-dark hover:text-orange-dark'}`}
                   disabled={isSubmitting}
                 >
                   <span className="action-md">Cadastrar</span>
-                  <img
-                    src={arrowRightIconOrange}
-                    className="h-6 w-6"
-                    alt="Seta para a direita"
-                  />
+                  <ArrowRight02Icon className="h-6 w-6" />
                 </button>
               </Link>
             </div>

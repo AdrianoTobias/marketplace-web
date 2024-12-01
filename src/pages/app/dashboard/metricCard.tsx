@@ -1,7 +1,7 @@
 import { Skeleton } from '../../../components/skeleton'
 
 interface MetricCardprops {
-  icon: string
+  icon: React.ReactNode
   amount: number | undefined
   metric: string
   isLoading?: boolean
@@ -26,8 +26,8 @@ export function MetricCard({
         </>
       ) : (
         <>
-          <div className="bg-blue-light my-3 flex h-[86px] w-20 items-center justify-center rounded-xl">
-            <img src={icon} className="h-10 w-10" alt="Ícone" />
+          <div className="my-3 flex h-[86px] w-20 items-center justify-center rounded-xl bg-blue-light">
+            {icon}
           </div>
           <div className="flex flex-1 flex-col justify-between py-5">
             <h1 className="title-lg text-gray-400">{amount}</h1>

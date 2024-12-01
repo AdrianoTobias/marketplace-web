@@ -1,5 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import {
+  AccessIcon,
+  ArrowRight02Icon,
+  CallIcon,
+  Mail02Icon,
+  UserIcon,
+} from 'hugeicons-react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
@@ -8,12 +15,6 @@ import z from 'zod'
 
 import { signUp } from '../../api/sign-up'
 import { uploadAttachments } from '../../api/upload-attachments'
-import accessIcon from '../../assets/icons/access.svg'
-import arrowRightIconOrange from '../../assets/icons/arrow-right-orange.svg'
-import arrowRightIconWhite from '../../assets/icons/arrow-right-white.svg'
-import callIcon from '../../assets/icons/call.svg'
-import mailIcon from '../../assets/icons/mail.svg'
-import userIcon from '../../assets/icons/user.svg'
 import { FieldErrorMessage } from '../../components/fieldErrorMessage'
 import { ImageUpload } from '../../components/imageUpload'
 import { InputWithIcon } from '../../components/inputWithIcon'
@@ -140,7 +141,7 @@ export function SignUp() {
               <div className="flex flex-col">
                 <Label htmlFor="fullName">Nome</Label>
                 <InputWithIcon
-                  icon={userIcon}
+                  icon={<UserIcon />}
                   id="fullName"
                   placeholder="Seu nome completo"
                   {...register('fullName')}
@@ -154,7 +155,7 @@ export function SignUp() {
               <div className="flex flex-col">
                 <Label htmlFor="phone">Telefone</Label>
                 <InputWithIcon
-                  icon={callIcon}
+                  icon={<CallIcon />}
                   id="phone"
                   placeholder="(00) 00000-0000"
                   {...register('phone')}
@@ -172,7 +173,7 @@ export function SignUp() {
               <div className="flex flex-col">
                 <Label htmlFor="email">E-mail</Label>
                 <InputWithIcon
-                  icon={mailIcon}
+                  icon={<Mail02Icon />}
                   id="email"
                   placeholder="Seu e-mail cadastrado"
                   {...register('email')}
@@ -186,7 +187,7 @@ export function SignUp() {
               <div className="flex flex-col">
                 <Label htmlFor="password">Senha</Label>
                 <InputWithIcon
-                  icon={accessIcon}
+                  icon={<AccessIcon />}
                   id="password"
                   placeholder="Sua senha de acesso"
                   type="password"
@@ -201,7 +202,7 @@ export function SignUp() {
               <div className="flex flex-col">
                 <Label htmlFor="passwordConfirmation">Confirmar senha</Label>
                 <InputWithIcon
-                  icon={accessIcon}
+                  icon={<AccessIcon />}
                   id="passwordConfirmation"
                   placeholder="Confirme a senha"
                   type="password"
@@ -223,11 +224,7 @@ export function SignUp() {
               type="submit"
             >
               <span className="action-md">Cadastrar</span>
-              <img
-                src={arrowRightIconWhite}
-                className="h-6 w-6"
-                alt="Seta para a direita"
-              />
+              <ArrowRight02Icon className="h-6 w-6" />
             </button>
           </form>
         </div>
@@ -243,11 +240,7 @@ export function SignUp() {
                 disabled={isSubmitting}
               >
                 <span className="action-md">Acessar</span>
-                <img
-                  src={arrowRightIconOrange}
-                  className="h-6 w-6"
-                  alt="Seta para a direita"
-                />
+                <ArrowRight02Icon className="h-6 w-6" />
               </button>
             </Link>
           </div>

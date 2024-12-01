@@ -1,7 +1,6 @@
+import { ImageUploadIcon } from 'hugeicons-react'
 import { useState } from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
-
-import imageUploadIcon from '../assets/icons/image-upload.svg'
 
 interface ImageUploadProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string
@@ -54,16 +53,17 @@ export function ImageUpload({
           ${preview && 'bg-black bg-opacity-60 opacity-0'}
           ${!disabled && 'cursor-pointer transition-opacity group-hover:opacity-100'}`}
       >
-        <img
-          src={imageUploadIcon}
-          className="h-8 w-8"
-          alt="Ícone de upload de imagem"
+        <ImageUploadIcon
+          className={`h-8 w-8
+            ${preview ? 'text-white' : 'text-orange-base'}
+          `}
         />
 
         {placeholder && (
           <p
             className={`body-sm max-w-[159px] text-center
-            ${preview ? 'text-white' : 'text-gray-300'}`}
+              ${preview ? 'text-white' : 'text-gray-300'}
+            `}
           >
             {placeholder}
           </p>

@@ -1,11 +1,11 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { Logout01Icon } from 'hugeicons-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { getProfile } from '../api/get-profile'
 import { signOut } from '../api/sign-out'
-import logoutIcon from '../assets/icons/logout.svg'
-import defaultAvatar from '../assets/icons/user.svg'
+import defaultAvatar from '../assets/images/default-avatar.svg'
 import { queryClient } from '../lib/react-query'
 import { Skeleton } from './skeleton'
 
@@ -77,7 +77,7 @@ export function AccountMenu() {
           >
             <p className="action-sm">Sair</p>
 
-            <img src={logoutIcon} className="h-5 w-5" alt="Ícone de logout" />
+            <Logout01Icon className="h-5 w-5" />
           </button>
         </div>
       )}

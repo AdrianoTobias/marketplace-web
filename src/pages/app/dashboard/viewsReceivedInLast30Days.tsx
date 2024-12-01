@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import { UserMultipleIcon } from 'hugeicons-react'
 
 import { getViewsReceivedInLast30Days } from '../../../api/views-received-in-last-30-days'
-import userMultipleIcon from '../../../assets//icons/user-multiple.svg'
 import { MetricCard } from './metricCard'
 
 export function ViewsReceivedInLast30Days() {
@@ -12,7 +12,7 @@ export function ViewsReceivedInLast30Days() {
 
   return (
     <MetricCard
-      icon={userMultipleIcon}
+      icon={<UserMultipleIcon className="h-10 w-10" />}
       amount={viewsReceived?.amount}
       metric="Pessoas visitantes"
       isLoading={isLoadingViewsReceived}

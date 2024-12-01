@@ -9,7 +9,6 @@ import { z } from 'zod'
 import { createProduct } from '../../../api/create-product'
 import { getProductCategories } from '../../../api/get-product-categories'
 import { uploadAttachments } from '../../../api/upload-attachments'
-import realCurrencyIcon from '../../../assets/icons/real-currency-orange.svg'
 import { CustomSelect } from '../../../components/customSelect'
 import { CustomTextarea } from '../../../components/customTextarea'
 import { FieldErrorMessage } from '../../../components/fieldErrorMessage'
@@ -190,7 +189,7 @@ export function AddProduct() {
                 <div>
                   <Label htmlFor="price">Valor</Label>
                   <InputWithIcon
-                    icon={realCurrencyIcon}
+                    icon={<div className="text-gray-400">R$</div>}
                     id="price"
                     placeholder="0,00"
                     {...register('price')}

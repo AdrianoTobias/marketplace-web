@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import { SaleTag02Icon } from 'hugeicons-react'
 
 import { getSoldProductsInLast30Days } from '../../../api/get-sold-products-in-last-30-days'
-import saleTagBlueIcon from '../../../assets//icons/sale-tag-blue.svg'
 import { MetricCard } from './metricCard'
 
 export function SoldProductsInLast30Days() {
@@ -13,7 +13,7 @@ export function SoldProductsInLast30Days() {
 
   return (
     <MetricCard
-      icon={saleTagBlueIcon}
+      icon={<SaleTag02Icon className="h-10 w-10 text-blue-dark" />}
       amount={soldProducts?.amount}
       metric="Produtos vendidos"
       isLoading={isLoadingSoldProducts}

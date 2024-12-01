@@ -1,9 +1,6 @@
+import { ArrowDown01Icon, Cancel01Icon, Tick02Icon } from 'hugeicons-react'
 import React, { useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
-
-import arrowDownIcon from '../assets/icons/arrow-down.svg'
-import cancelIcon from '../assets/icons/cancel.svg'
-import tickIcon from '../assets/icons/tick.svg'
 
 interface SelectOption {
   label: string
@@ -15,7 +12,7 @@ interface CustomSelectProps
   name: string
   options: SelectOption[]
   placeholder?: string
-  icon?: string // Tipo como React.ReactNode, para receber um elemento React para o ícone
+  icon?: React.ReactNode // Tipo como React.ReactNode, para receber um elemento React para o ícone
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any>
 }
@@ -43,9 +40,7 @@ export function CustomSelect({
                 ${value ? 'border-gray-400 ' : 'border-gray-100 '}`}
               onClick={toggleOpen}
             >
-              {icon && (
-                <img src={icon} className="h-6 w-6 opacity-50" alt="Ícone" />
-              )}
+              {icon}
 
               <span
                 className={`body-md flex-1 
@@ -55,30 +50,26 @@ export function CustomSelect({
               </span>
 
               {value && (
-                <span className="bg-shape flex h-6 w-6 items-center justify-center rounded-full">
-                  <img
-                    src={cancelIcon}
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-shape">
+                  <Cancel01Icon
+                    className="h-4 w-4"
                     onClick={(e) => {
                       e.stopPropagation()
                       onChange('')
                     }}
-                    className="h-4 w-4"
-                    alt="Ícone de cancelar"
                   />
                 </span>
               )}
 
-              <img
-                src={arrowDownIcon}
-                alt="Íconde de uma seta"
-                className={`h-6 w-6
+              <ArrowDown01Icon
+                className={`h-6 w-6 transition-transform duration-200
                     ${isOpen && '-scale-y-100 transform'}
                 `}
               />
             </div>
 
             {isOpen && (
-              <div className="border-shape absolute mt-1 flex w-full flex-col rounded-lg border bg-white shadow-lg">
+              <div className="absolute mt-1 flex w-full flex-col rounded-lg border border-shape bg-white shadow-lg">
                 {options.map((option) => (
                   <div
                     key={option.value}
@@ -93,7 +84,7 @@ export function CustomSelect({
                         ${
                           value === option.value
                             ? 'text-orange-base'
-                            : 'hover:text-orange-dark text-gray-300'
+                            : 'text-gray-300 hover:text-orange-dark'
                         }
                         `}
                     >
@@ -101,11 +92,7 @@ export function CustomSelect({
                     </p>
 
                     {value === option.value && (
-                      <img
-                        src={tickIcon}
-                        alt="Ícone de ticado"
-                        className="h-6 w-6"
-                      />
+                      <Tick02Icon className="h-6 w-6 text-orange-base" />
                     )}
                   </div>
                 ))}

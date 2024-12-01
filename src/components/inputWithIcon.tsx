@@ -1,13 +1,11 @@
+import { ViewIcon, ViewOffIcon } from 'hugeicons-react'
 import React, { useState } from 'react'
-
-import viewIcon from '../assets/icons/view.svg'
-import viewOffIcon from '../assets/icons/view-off.svg'
 
 interface InputWithIconProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   type?: string
   placeholder?: string
-  icon?: string // Tipo como React.ReactNode, para receber um elemento React para o ícone
+  icon?: React.ReactNode // Tipo como React.ReactNode, para receber um elemento React para o ícone
   className?: string // Para permitir estilos adicionais
 }
 
@@ -29,7 +27,11 @@ export const InputWithIcon = React.forwardRef<
         
         ${className}`}
     >
-      {icon && <img src={icon} className="h-6 w-6 opacity-50" alt="Ícone" />}
+      {icon && (
+        <div className="flex h-6 w-6 items-center justify-center text-gray-200">
+          {icon}
+        </div>
+      )}
       <input
         type={type === 'password' && !showPassword ? 'password' : 'text'}
         placeholder={placeholder}
@@ -39,11 +41,9 @@ export const InputWithIcon = React.forwardRef<
       />
       {type === 'password' && (
         <button type="button" onClick={togglePasswordVisibility}>
-          <img
-            className="h-6 w-6 opacity-90"
-            src={showPassword ? viewIcon : viewOffIcon}
-            alt={showPassword ? 'Esconder a senha' : 'Mostar a senha'}
-          />
+          <div className="h-6 w-6 text-gray-300">
+            {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+          </div>
         </button>
       )}
     </div>

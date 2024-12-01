@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { ArrowLeft02Icon } from 'hugeicons-react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -13,8 +14,6 @@ import {
 } from '../../../api/get-product-by-id'
 import { getProductCategories } from '../../../api/get-product-categories'
 import { uploadAttachments } from '../../../api/upload-attachments'
-import arrowLeftOrangeIcon from '../../../assets/icons/arrow-left-orange.svg'
-import realCurrencyIcon from '../../../assets/icons/real-currency-orange.svg'
 import { CustomSelect } from '../../../components/customSelect'
 import { CustomTextarea } from '../../../components/customTextarea'
 import { FieldErrorMessage } from '../../../components/fieldErrorMessage'
@@ -187,11 +186,7 @@ export function EditProduct() {
             onClick={handleGoBack}
             className="action-md flex items-center gap-2 p-0.5 text-orange-base hover:text-orange-dark"
           >
-            <img
-              src={arrowLeftOrangeIcon}
-              className="h-5 w-5"
-              alt="Ícone de seta para a esquerda"
-            />
+            <ArrowLeft02Icon className="h-5 w-5" />
             Voltar
           </button>
 
@@ -256,7 +251,7 @@ export function EditProduct() {
                   <div>
                     <Label htmlFor="price">Valor</Label>
                     <InputWithIcon
-                      icon={realCurrencyIcon}
+                      icon={<div className="text-gray-400">R$</div>}
                       id="price"
                       placeholder="0,00"
                       disabled={['sold', 'cancelled'].includes(product.status)}

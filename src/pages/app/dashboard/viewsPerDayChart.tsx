@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { Calendar04Icon, UserMultipleIcon } from 'hugeicons-react'
 import {
   CartesianGrid,
   Line,
@@ -11,8 +12,6 @@ import {
 } from 'recharts'
 
 import { getViewsPerDayInLast30Days } from '../../../api/get-views-per-day-in-last-30-days'
-import calendarIcon from '../../../assets//icons/calendar.svg'
-import userMultipleIcon from '../../../assets//icons/user-multiple.svg'
 import Spinner from '../../../components/sppiner'
 
 const CustomTooltip = ({
@@ -30,11 +29,7 @@ const CustomTooltip = ({
         <p className="label-sm text-gray-400">{`${day} de ${monthName}`}</p>
 
         <div className="flex items-center gap-2">
-          <img
-            src={userMultipleIcon}
-            className="h-4 w-4"
-            alt="Ícone de múltiplos usuários"
-          />
+          <UserMultipleIcon className="h-4 w-4" />
 
           <p className="body-xs text-gray-300">{payload[0].value} visitantes</p>
         </div>
@@ -70,11 +65,7 @@ export function ViewsPerDayChart() {
         <h2 className="title-sm text-gray-500">Visitantes</h2>
 
         <div className="flex items-center justify-center gap-2">
-          <img
-            src={calendarIcon}
-            className="h-4 w-4"
-            alt="Íconde de um calendário"
-          />
+          <Calendar04Icon className="h-4 w-4 text-blue-dark" />
 
           <span className="label-sm text-gray-300">
             {formattedDateThirtyDaysAgo} - {formattedCurrentDate}

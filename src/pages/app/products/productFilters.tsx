@@ -1,11 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { SaleTag02Icon, Search01Icon } from 'hugeicons-react'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 import { z } from 'zod'
 
 import { Status } from '../../../api/types/product'
-import saleTagIcon from '../../../assets/icons/sale-tag.svg'
-import searchIcon from '../../../assets/icons/search.svg'
 import { CustomSelect } from '../../../components/customSelect'
 import { InputWithIcon } from '../../../components/inputWithIcon'
 
@@ -68,7 +67,7 @@ export function ProductFilters() {
       >
         <div className="flex flex-col gap-5">
           <InputWithIcon
-            icon={searchIcon}
+            icon={<Search01Icon />}
             id="search"
             placeholder="Pesquisar"
             {...register('search')}
@@ -78,14 +77,14 @@ export function ProductFilters() {
             name="status"
             options={statusOptions}
             placeholder="Status"
-            icon={saleTagIcon}
+            icon={<SaleTag02Icon className="h-6 w-6 text-gray-200" />}
             control={control}
           />
         </div>
 
         <button
           type="submit"
-          className={`action-md bg-orange-base flex h-14 w-full items-center justify-center rounded-[.625rem] px-4 text-white transition-colors duration-200
+          className={`action-md flex h-14 w-full items-center justify-center rounded-[.625rem] bg-orange-base px-4 text-white transition-colors duration-200
               ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:bg-orange-dark'}`}
           disabled={isSubmitting}
         >
