@@ -18,7 +18,6 @@ import { uploadAttachments } from '../../api/upload-attachments'
 import { FieldErrorMessage } from '../../components/fieldErrorMessage'
 import { ImageUpload } from '../../components/imageUpload'
 import { InputWithIcon } from '../../components/inputWithIcon'
-import { Label } from '../../components/label'
 
 const ACCEPTED_IMAGE_TYPES = ['image/png']
 
@@ -138,83 +137,56 @@ export function SignUp() {
                 )}
               </div>
 
-              <div className="flex flex-col">
-                <Label htmlFor="fullName">Nome</Label>
-                <InputWithIcon
-                  icon={<UserIcon />}
-                  id="fullName"
-                  placeholder="Seu nome completo"
-                  {...register('fullName')}
-                />
+              <InputWithIcon
+                label="Nome"
+                icon={<UserIcon />}
+                id="fullName"
+                placeholder="Seu nome completo"
+                error={errors?.fullName?.message}
+                register={register('fullName')}
+              />
 
-                {errors.fullName && (
-                  <FieldErrorMessage message={errors.fullName.message} />
-                )}
-              </div>
-
-              <div className="flex flex-col">
-                <Label htmlFor="phone">Telefone</Label>
-                <InputWithIcon
-                  icon={<CallIcon />}
-                  id="phone"
-                  placeholder="(00) 00000-0000"
-                  {...register('phone')}
-                />
-
-                {errors.phone && (
-                  <FieldErrorMessage message={errors.phone.message} />
-                )}
-              </div>
+              <InputWithIcon
+                label="Telefone"
+                icon={<CallIcon />}
+                id="phone"
+                placeholder="(00) 00000-0000"
+                error={errors?.phone?.message}
+                register={register('phone')}
+              />
             </div>
 
             <div className="space-y-5">
               <h3 className="title-sm text-gray-500">Acesso</h3>
 
-              <div className="flex flex-col">
-                <Label htmlFor="email">E-mail</Label>
-                <InputWithIcon
-                  icon={<Mail02Icon />}
-                  id="email"
-                  placeholder="Seu e-mail cadastrado"
-                  {...register('email')}
-                />
+              <InputWithIcon
+                label="E-mail"
+                icon={<Mail02Icon />}
+                id="email"
+                placeholder="Seu e-mail cadastrado"
+                error={errors?.email?.message}
+                register={register('email')}
+              />
 
-                {errors.email && (
-                  <FieldErrorMessage message={errors.email.message} />
-                )}
-              </div>
+              <InputWithIcon
+                label="Senha"
+                icon={<AccessIcon />}
+                type="password"
+                id="password"
+                placeholder="Sua senha de acesso"
+                error={errors?.password?.message}
+                register={register('password')}
+              />
 
-              <div className="flex flex-col">
-                <Label htmlFor="password">Senha</Label>
-                <InputWithIcon
-                  icon={<AccessIcon />}
-                  id="password"
-                  placeholder="Sua senha de acesso"
-                  type="password"
-                  {...register('password')}
-                />
-
-                {errors.password && (
-                  <FieldErrorMessage message={errors.password.message} />
-                )}
-              </div>
-
-              <div className="flex flex-col">
-                <Label htmlFor="passwordConfirmation">Confirmar senha</Label>
-                <InputWithIcon
-                  icon={<AccessIcon />}
-                  id="passwordConfirmation"
-                  placeholder="Confirme a senha"
-                  type="password"
-                  {...register('passwordConfirmation')}
-                />
-
-                {errors.passwordConfirmation && (
-                  <FieldErrorMessage
-                    message={errors.passwordConfirmation.message}
-                  />
-                )}
-              </div>
+              <InputWithIcon
+                label="Confirmar senha"
+                icon={<AccessIcon />}
+                type="password"
+                id="passwordConfirmation"
+                placeholder="Confirme a senha"
+                error={errors?.passwordConfirmation?.message}
+                register={register('passwordConfirmation')}
+              />
             </div>
 
             <button

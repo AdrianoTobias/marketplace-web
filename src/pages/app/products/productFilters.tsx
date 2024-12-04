@@ -70,7 +70,7 @@ export function ProductFilters() {
             icon={<Search01Icon />}
             id="search"
             placeholder="Pesquisar"
-            {...register('search')}
+            register={register('search')}
           />
 
           <CustomSelect

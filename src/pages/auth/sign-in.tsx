@@ -8,9 +8,7 @@ import { toast } from 'sonner'
 import z from 'zod'
 
 import { signIn } from '../../api/sign-in'
-import { FieldErrorMessage } from '../../components/fieldErrorMessage'
 import { InputWithIcon } from '../../components/inputWithIcon'
-import { Label } from '../../components/label'
 
 const signInFormSchema = z.object({
   email: z.string().email('E-mail inválido'),
@@ -64,34 +62,24 @@ export function SignIn() {
             className="flex flex-col gap-5"
             onSubmit={handleSubmit(handleSignIn)}
           >
-            <div className="flex flex-col">
-              <Label htmlFor="email">E-mail</Label>
-              <InputWithIcon
-                icon={<Mail02Icon />}
-                id="email"
-                placeholder="Seu e-mail cadastrado"
-                {...register('email')}
-              />
+            <InputWithIcon
+              label="E-mail"
+              icon={<Mail02Icon />}
+              id="email"
+              placeholder="Seu e-mail cadastrado"
+              error={errors?.email?.message}
+              register={register('email')}
+            />
 
-              {errors.email && (
-                <FieldErrorMessage message={errors.email.message} />
-              )}
-            </div>
-
-            <div className="flex flex-col">
-              <Label htmlFor="password">Senha</Label>
-              <InputWithIcon
-                icon={<AccessIcon />}
-                id="password"
-                placeholder="Sua senha de acesso"
-                type="password"
-                {...register('password')}
-              />
-
-              {errors.password && (
-                <FieldErrorMessage message={errors.password.message} />
-              )}
-            </div>
+            <InputWithIcon
+              label="Senha"
+              icon={<AccessIcon />}
+              type="password"
+              id="password"
+              placeholder="Sua senha de acesso"
+              error={errors?.password?.message}
+              register={register('password')}
+            />
 
             <button
               className={`mt-12 flex h-14 w-full items-center justify-between rounded-[.625rem] bg-orange-base px-5 text-white transition-colors duration-200

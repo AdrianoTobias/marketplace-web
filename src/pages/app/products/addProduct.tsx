@@ -10,11 +10,11 @@ import { createProduct } from '../../../api/create-product'
 import { getProductCategories } from '../../../api/get-product-categories'
 import { uploadAttachments } from '../../../api/upload-attachments'
 import { CustomSelect } from '../../../components/customSelect'
-import { CustomTextarea } from '../../../components/customTextarea'
 import { FieldErrorMessage } from '../../../components/fieldErrorMessage'
 import { ImageUpload } from '../../../components/imageUpload'
 import { InputWithIcon } from '../../../components/inputWithIcon'
 import { Label } from '../../../components/label'
+import { Textarea } from '../../../components/textarea'
 import { queryClient } from '../../../lib/react-query'
 
 const ACCEPTED_IMAGE_TYPES = ['image/png']
@@ -174,45 +174,33 @@ export function AddProduct() {
             <div className="flex flex-col gap-5">
               <div className="flex gap-5">
                 <div className="w-[323px]">
-                  <Label htmlFor="title">Título</Label>
                   <InputWithIcon
+                    label="Título"
                     id="title"
                     placeholder="Nome do produto"
-                    {...register('title')}
+                    error={errors?.title?.message}
+                    register={register('title')}
                   />
-
-                  {errors.title && (
-                    <FieldErrorMessage message={errors.title.message} />
-                  )}
                 </div>
 
-                <div>
-                  <Label htmlFor="price">Valor</Label>
-                  <InputWithIcon
-                    icon={<div className="text-gray-400">R$</div>}
-                    id="price"
-                    placeholder="0,00"
-                    {...register('price')}
-                  />
-
-                  {errors.price && (
-                    <FieldErrorMessage message={errors.price.message} />
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="description">Descrição</Label>
-                <CustomTextarea
-                  rows={4}
-                  placeholder="Escreva detalhes sobre o produto, tamanho e características"
-                  register={register('description')}
+                <InputWithIcon
+                  label="Valor"
+                  icon={<div>R$</div>}
+                  id="price"
+                  placeholder="0,00"
+                  error={errors?.price?.message}
+                  register={register('price')}
                 />
-
-                {errors.description && (
-                  <FieldErrorMessage message={errors.description.message} />
-                )}
               </div>
+
+              <Textarea
+                label="Descrição"
+                id="description"
+                rows={4}
+                placeholder="Escreva detalhes sobre o produto, tamanho e características"
+                error={errors?.description?.message}
+                register={register('description')}
+              />
 
               <div>
                 <Label htmlFor="category">Categoria</Label>
@@ -232,6 +220,7 @@ export function AddProduct() {
             <div className="flex h-12 gap-3">
               <Link to="/products" className="flex h-full w-full">
                 <button
+                  type="button"
                   className={`action-md flex w-full items-center justify-center rounded-[.625rem] border border-orange-base bg-white px-4 text-orange-base transition-colors duration-200 
                     ${isSubmitting ? 'cursor-not-allowed opacity-55' : 'hover:border-orange-dark hover:text-orange-dark'}
                     `}

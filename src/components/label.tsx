@@ -5,14 +5,9 @@ interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
   children: React.ReactNode
 }
 
-export function Label({
-  htmlFor,
-  children,
-  className = '',
-  ...props
-}: LabelProps) {
+export function Label({ htmlFor, children, ...props }: LabelProps) {
   return (
-    <label htmlFor={htmlFor} className={`label-md ${className}`} {...props}>
+    <label htmlFor={htmlFor} {...props}>
       {children}
     </label>
   )
