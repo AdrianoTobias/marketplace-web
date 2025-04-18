@@ -18,10 +18,9 @@ import { uploadAttachments } from '../../api/upload-attachments'
 import { FieldErrorMessage } from '../../components/fieldErrorMessage'
 import { ImageUpload } from '../../components/imageUpload'
 import { InputWithIcon } from '../../components/inputWithIcon'
+import { formatPhone } from '../utils/formatPhone'
 
 const ACCEPTED_IMAGE_TYPES = ['image/png']
-
-const phoneRegex = /^\d{10,11}$/ // Entre 10 e 11 dígitos
 
 const signUpFormSchema = z
   .object({
@@ -41,7 +40,15 @@ const signUpFormSchema = z
 
     fullName: z.string().min(3, 'Informe seu nome completo'),
 
-    phone: z.string().regex(phoneRegex, 'Telefone inválido'),
+    phone: z.string().refine(
+      (val) => {
+        const digitsOnly = val.replace(/\D/g, '')
+        return digitsOnly.length === 10 || digitsOnly.length === 11
+      },
+      {
+        message: 'Telefone inválido',
+      },
+    ),
 
     email: z.string().email('E-mail inválido'),
 
@@ -152,7 +159,16 @@ export function SignUp() {
                 id="phone"
                 placeholder="(00) 00000-0000"
                 error={errors?.phone?.message}
-                register={register('phone')}
+                register={{
+                  ...register('phone'),
+                  onChange: async (event) => {
+                    const masked = formatPhone(event.target.value)
+
+                    event.target.value = masked.length > 0 ? masked : null
+
+                    return await register('phone').onChange(event)
+                  },
+                }}
               />
             </div>
 
