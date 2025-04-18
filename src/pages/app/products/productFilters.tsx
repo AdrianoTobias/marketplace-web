@@ -77,7 +77,7 @@ export function ProductFilters() {
             name="status"
             options={statusOptions}
             placeholder="Status"
-            icon={<SaleTag02Icon className="h-6 w-6 text-gray-200" />}
+            icon={<SaleTag02Icon />}
             control={control}
           />
         </div>
