@@ -69,6 +69,7 @@ export function ProductFilters() {
           <InputWithIcon
             icon={<Search01Icon />}
             id="search"
+            value={search ?? ''}
             placeholder="Pesquisar"
             register={register('search')}
           />

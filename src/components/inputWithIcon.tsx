@@ -17,6 +17,7 @@ interface InputWithIconProps
 
 export function InputWithIcon({
   label,
+  value,
   icon,
   type = 'text',
   id,
@@ -24,7 +25,9 @@ export function InputWithIcon({
   register,
   ...props
 }: InputWithIconProps) {
-  const [isFilled, setIsFilled] = useState(false)
+  const [isFilled, setIsFilled] = useState(
+    value !== undefined && value !== null && value !== '',
+  )
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsFilled(event.target.value.trim() !== '')
